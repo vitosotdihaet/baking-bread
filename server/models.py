@@ -8,9 +8,9 @@ class User(db.Model): # has relationships with History, CurrentOrders and Addres
 
 	username = db.Column(db.String(64), unique=True)
 	email = db.Column(db.String(120), unique=True)
-	passwordHash = db.Column(db.String(128))
+	password_hash = db.Column(db.String(128))
 	balance = db.Column(db.Integer)
-	birthday = db.Column(db.DateTime)
+	# birthday = db.Column(db.Date)
 	phone = db.Column(db.Integer)
 	role = db.Column(db.String(10))
 	
@@ -40,7 +40,7 @@ class History(db.Model): # connected to User data-table
 
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
-	date = db.Column(db.DateTime)
+	# date = db.Column(db.DateTime)
 	totalPrice = db.Column(db.Integer)
 	address = db.Column(db.String(100))
 

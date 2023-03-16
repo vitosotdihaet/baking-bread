@@ -4,7 +4,7 @@
 
 * Install ***Python 3.10*** or higher
 
-* Set virtual envinroment via console in the directory called ***server*** 
+* Set virtual envinroment via console in the directory called ***/server*** 
 	
 	`` 
 	cd Your-directory/baking-bread/server
@@ -34,10 +34,13 @@
 		- alembic==1.10.2
 		- click==8.1.3
 		- colorama==0.4.6
+		- defusedxml==0.7.1
 		- Flask==2.2.3
 		- Flask-Cors==3.0.10
+		- Flask-Login==0.6.2
 		- flask-marshmallow==0.14.0
 		- Flask-Migrate==4.0.4
+		- Flask-OpenID==1.3.0
 		- Flask-SQLAlchemy==3.0.3
 		- greenlet==2.0.2
 		- itsdangerous==2.1.2
@@ -45,10 +48,10 @@
 		- Mako==1.2.4
 		- MarkupSafe==2.1.2
 		- marshmallow==3.19.0
-		- marshmallow-sqlalchemy==0.29.0
 		- packaging==23.0
 		- psycopg2==2.9.5
 		- python-dotenv==1.0.0
+		- python3-openid==3.2.0
 		- six==1.16.0
 		- SQLAlchemy==2.0.6
 		- typing_extensions==4.5.0
