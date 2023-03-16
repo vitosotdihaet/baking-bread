@@ -64,7 +64,7 @@
 	* create a new database
 	* make sure to set up ***the same password*** and ***the same name of the database*** 
 	in line ``app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql+psycopg2://postgres:test3915@localhost/bakingBread"`` 
-	of app.py, where "test3915" is the ***password***, "bakingBread" is ***the name of the database***
+	of app.py, where "test3915" is ***the password***, "bakingBread" is ***the name of the database***
 
 # Backend files and directories
 
