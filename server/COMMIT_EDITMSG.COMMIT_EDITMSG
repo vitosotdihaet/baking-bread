@@ -1,0 +1,126 @@
+models ans testing
+
+# --------------
+# Please enter the commit message for your changes. Everything below
+# this paragraph is ignored, and an empty message aborts the commit.
+# Just close the window to accept your message.
+diff --git a/server/__pycache__/models.cpython-310.pyc b/server/__pycache__/models.cpython-310.pyc
+index b1e2df1..ade14ba 100644
+Binary files a/server/__pycache__/models.cpython-310.pyc and b/server/__pycache__/models.cpython-310.pyc differ
+diff --git a/server/models.py b/server/models.py
+index 8f68cdc..2a0bfe8 100644
+--- a/server/models.py
++++ b/server/models.py
+@@ -7,11 +7,12 @@ class User(db.Model): # has relationships with History, CurrentOrders and Addres
+ 	adresses_rel = db.relationship('Address', backref='client', lazy='dynamic')
+ 
+ 	username = db.Column(db.String(64), unique=True)
++	name = db.Column(db.String(64))
+ 	email = db.Column(db.String(120), unique=True)
+ 	password_hash = db.Column(db.String(128))
+ 	balance = db.Column(db.Integer)
+-	# birthday = db.Column(db.Date)
+-	phone = db.Column(db.Integer)
++	birthday = db.Column(db.Date)
++	phone = db.Column(db.String(12))
+ 	role = db.Column(db.String(10))
+ 	
+ 	@property
+@@ -40,7 +41,7 @@ class History(db.Model): # connected to User data-table
+ 
+ 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+ 
+-	# date = db.Column(db.DateTime)
++	date = db.Column(db.DateTime)
+ 	totalPrice = db.Column(db.Integer)
+ 	address = db.Column(db.String(100))
+ 
+@@ -59,7 +60,7 @@ class Address(db.Model): # connected to User data-table
+ 
+ class Bakery(db.Model): # has a relationship with CookedGoods
+ 	id = db.Column(db.Integer, primary_key = True)
+-	cookedGoods_rel = db.relationship('CookedGoods', backref='bakery', lazy='dynamic')
++	cookedGoods_rel = db.relationship('CookedGoods', backref='bakery', lazy='joined')
+ 
+ 	name = db.Column(db.String(30))
+ 	address = db.Column(db.String(100))
+@@ -68,8 +69,10 @@ class Bakery(db.Model): # has a relationship with CookedGoods
+ 
+ class Goods(db.Model): # has relationships with CurrentGoods, CookedGoods, GoodsDetails and GoodType data-tables
+ 	id = db.Column(db.Integer, primary_key = True)
+-	currentGoods_rel = db.relationship('CurrentGoods', backref='ordered_good', lazy='dynamic')
+-	cookedGoods_rel = db.relationship('CookedGoods', backref='coocked_good', lazy='dynamic')
++	currentGoods_rel = db.relationship('CurrentGoods', backref='good', lazy='dynamic')
++	cookedGoods_rel = db.relationship('CookedGoods', backref='good', lazy='dynamic')
++	goodsDetails_rel = db.relationship('GoodsDetails', backref='good', lazy='dynamic')
++	goodType_rel = db.relationship('GoodType', backref='good', lazy='dynamic')
+ 
+ 	type_good = db.Column(db.String(20))
+ 	image = db.Column(db.String(200))
+@@ -90,7 +93,7 @@ class CookedGoods(db.Model): # connected to Goods and Bakery data-tables
+ 
+ class CurrentOrders(db.Model): # has a relationship with CurrentGoods data-table and connected to User data-table 
+ 	id = db.Column(db.Integer, primary_key = True)
+-	currentGoods_rel = db.relationship('CurrentGoods', backref='current_order', lazy='dynamic')
++	currentGoods_rel = db.relationship('CurrentGoods', backref='current_order', lazy='joined')
+ 
+ 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+ 
+@@ -108,7 +111,7 @@ class CurrentGoods(db.Model): # connected to Goods and CurrentOrders data-tables
+ 
+ class GoodsDetails(db.Model): # has a relationship with Images data-table and connected to Goods data-table 
+ 	id = db.Column(db.Integer, primary_key = True)
+-	images_rel = db.relationship('Images', backref='current_order', lazy='dynamic')
++	images_rel = db.relationship('Images', backref='good_details')
+ 
+ 	good_id = db.Column(db.Integer, db.ForeignKey('goods.id'))
+ 
+diff --git a/server/test-data-tables.py b/server/test-data-tables.py
+new file mode 100644
+index 0000000..59e39d2
+--- /dev/null
++++ b/server/test-data-tables.py
+@@ -0,0 +1,42 @@
++from app import db, create_app
++from datetime import date, datetime
++from random import randint
++
++from models import User, Address, CurrentOrders, History
++from models import Bakery, Goods, CurrentGoods, CookedGoods, GoodsDetails, GoodType, Images 
++from models import Promocodes
++
++app = create_app()
++app.app_context().push()
++
++def find_and_delete_user(username: str):
++	obj = db.session.query(User).filter(User.username == username).first()
++
++	if obj != None:
++		print("Found:", username)
++
++		db.session.delete(obj)
++		db.session.commit()
++
++		obj = db.session.query(User).filter(User.username == "Sarzhanchok2").first()
++
++		if obj == None:
++			print(username, 'successfuly deleted')
++			print()
++		else:
++			print(username, "wasnt deleted?")
++			exit()
++
++	else:
++		print(username, 'doesnt exist')
++		print()
++
++def delete_all_objects(Class_arg):
++	objects = Class_arg.query.all()
++
++	for obj in objects:
++		db.session.delete(obj)
++
++	db.session.commit()
++
++find_and_delete_user("Sarzhanchok2")
+\ No newline at end of file
