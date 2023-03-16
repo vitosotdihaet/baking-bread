@@ -1,1 +1,3 @@
-*~
+server/venv
+server/migrations
+server/__pycache__

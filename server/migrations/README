@@ -1,0 +1,3 @@
+Single-database configuration for Flask.
+
+To create one use "flask db init" command (requires flask-migrate module)
