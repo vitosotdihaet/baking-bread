@@ -1,4 +1,7 @@
 # Contributing
-The best way to contribute to our project is to open an **issue** with one of the templates.
+**If you don't know how** or **want** to implement anything *yourself*, the best way to contribute to our project is to open an **issue**
+with one of the templates. 
 
-If your idea cannot be represented with provided template -- please verbosely tell us about it in the same **Issues** tab
+**Elsewise**, you can create a pull request (with one of templates from `.github/PULL_REQUEST_TEMPLATE`).
+
+**Please fill out each paragraph with verbose and precise information of your idea!**
