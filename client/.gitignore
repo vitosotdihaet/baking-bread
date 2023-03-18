@@ -1,0 +1,5 @@
+/build
+next-env.d.ts
+/analyze
+/node_modules
+.env
