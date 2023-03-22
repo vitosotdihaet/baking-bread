@@ -3,7 +3,7 @@
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "skipLibCheck": true,
-        "strict": false,
+        "strict": true,
         "forceConsistentCasingInFileNames": true,
         "allowSyntheticDefaultImports": true,
         "noEmit": true,
@@ -16,9 +16,11 @@
         "jsx": "preserve",
         "baseUrl": ".",
         "paths": {
-            "*": ["./src/*"]
+            "*": ["./src/*"],
+            "@/public/*": ["public/*"]
         },
-        "target": "es5"
+        "target": "es5",
+        "typeRoots": ["types", "node_modules/@types"]
     },
     "ts-node": {
         "compilerOptions": {
@@ -26,6 +28,7 @@
         }
     },
     "include": [
+        "additional.d.ts",
         "next-env.d.ts",
         "**/*.ts",
         "**/*.tsx",
