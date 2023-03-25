@@ -25,3 +25,4 @@ jobs:
           # 👇 Chromatic projectToken, refer to the manage page to obtain it.
           projectToken: ${{ secrets.UI_TOKEN }}
           workingDir: client
+          buildScriptName: build-storybook
