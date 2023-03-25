@@ -1,7 +1,4 @@
 import type { Preview } from '@storybook/react';
-import { withScreenshot } from 'storycap';
-
-export const decorators = [withScreenshot];
 
 const preview: Preview = {
     parameters: {
@@ -11,10 +8,6 @@ const preview: Preview = {
                 color: /(background|color)$/i,
                 date: /Date$/,
             },
-        },
-        screenshot: {
-            delay: 200,
-            viewpor: 'Iphone 5',
         },
     },
 };

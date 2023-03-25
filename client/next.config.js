@@ -7,6 +7,9 @@ const {
 const buildWebpackConfig = require('./config/build/buildWebpackConfig');
 const buildSecurityHeaders = require('./config/next/buildSecurityHeaders');
 
+// @ts-check
+const { i18n } = require('./next-i18next.config.js');
+
 withBundleAnalyzer({
     enabled: process.env.ANALYZE === 'true',
 });
@@ -21,11 +24,7 @@ module.exports = async (phase, { defaultConfig }) => {
      * @type {import('next').NextConfig}
      */
     const nextConfig = {
-        i18n: {
-            locales: ['ru-RU', 'en-US', 'nl-NL'],
-            defaultLocale: 'en-US',
-            localeDetection: false,
-        },
+        i18n,
         compress: true,
         distDir: 'build',
         poweredByHeader: false,
@@ -33,6 +32,8 @@ module.exports = async (phase, { defaultConfig }) => {
         httpAgentOptions: {
             keepAlive: true,
         },
+        swcMinify: true,
+        reactStrictMode: true,
         experimental: {
             appDir: false,
         },

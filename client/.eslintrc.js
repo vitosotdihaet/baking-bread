@@ -34,6 +34,7 @@ module.exports = {
         'jsx-quotes': ['error', 'prefer-single'],
         'react/jsx-indent': ['error', 4],
         'react/jsx-indent-props': ['error', 4],
+        'react/display-name': 'off',
         'react-hooks/rules-of-hooks': 'error',
         'react-hooks/exhaustive-deps': 'error',
         'react/react-in-jsx-scope': 'off',

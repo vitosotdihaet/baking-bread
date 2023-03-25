@@ -1,3 +1,6 @@
 {
-    "react-i18n.i18nPaths": ""
+    "react-i18n.i18nPaths": "public\\locales",
+    "i18n-ally.localesPaths": [
+        "public/locales"
+    ]
 }
