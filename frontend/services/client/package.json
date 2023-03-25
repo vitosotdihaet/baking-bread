@@ -15,17 +15,10 @@
         "lint:ts:fix": "eslint \"**/*.{ts,tsx}\" --fix",
         "lint:scss": "npx stylelint \"**/*.scss\"",
         "lint:scss:fix": "npx stylelint \"**/*.scss\" --fix",
-        "test": "jest",
         "test:unit": "jest --config ./config/jest/jest.config.ts",
-        "test:ui": "npx loki test",
-        "test:ui:ok": "npx loki approve",
-        "test:ui:ci": "loki --requireReference --reactUri file:./storybook-static",
-        "test:ui:report": "npm run test:ui:json && npm run test:ui:html",
-        "test:ui:json": "node scripts/loki/generate-visual-json-report.js",
-        "test:ui:html": "npx reg-cli --from .loki/report.json --report .loki/report.html",
+        "test:ui": "npx chromatic --project-token f8a06fbca5f6",
         "storybook": "storybook dev -p 6006 -c ./config/storybook",
-        "build-storybook": "storybook build -c ./config/storybook",
-        "chromatic": "npx chromatic --project-token f8a06fbca5f6"
+        "build-storybook": "storybook build -c ./config/storybook"
     },
     "dependencies": {
         "i18next": "^22.4.13",
