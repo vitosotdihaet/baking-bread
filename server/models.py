@@ -1,5 +1,7 @@
 from app import db
 
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 class User(db.Model): # has relationships with History, CurrentOrders and Address data-tables
 	id = db.Column(db.Integer, primary_key = True)
@@ -15,7 +17,7 @@ class User(db.Model): # has relationships with History, CurrentOrders and Addres
 	birthday = db.Column(db.Date)
 	phone = db.Column(db.String(12))
 	role = db.Column(db.String(10))
-	
+
 	@property
 	def is_authenticated(self):
 		return True
@@ -27,6 +29,12 @@ class User(db.Model): # has relationships with History, CurrentOrders and Addres
 	@property
 	def is_anonymous(self):
 		return False
+	
+	def hash_password(self, password):
+		self.password_hash = generate_password_hash(password=password)
+
+	def verify_password(self, password):
+		return check_password_hash(self.password_hash, password)
 
 	def get_id(self):
 		try:
@@ -124,7 +132,6 @@ class CurrentGoods(db.Model): # connected to Goods and CurrentOrders data-tables
 
 class GoodsDetails(db.Model): # has a relationship with Images data-table and connected to Goods data-table 
 	id = db.Column(db.Integer, primary_key = True)
-	images_rel = db.relationship('Images', backref='good_details')
 
 	good_id = db.Column(db.Integer, db.ForeignKey('goods.id'))
 
