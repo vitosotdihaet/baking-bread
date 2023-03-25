@@ -12,8 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install dependencies
-        # 👇 Install dependencies with the same package manager used in the project (replace it as needed), e.g. yarn, npm, pnpm
         run: cd client && npm install
+      - name: Build production project
+        run: npm run build:prod
+        if: always()
       - name: Publish to Chromatic
         uses: chromaui/action@v1
         with:
