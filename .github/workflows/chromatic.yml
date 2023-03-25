@@ -14,7 +14,7 @@ jobs:
         with:
           node-version: "16.14.2"
           workingDir: client
-      - run: yarn install --immutable
+      - run: npm i
       - uses: chromaui/action@v1
         with:
           projectToken: ${{ secrets.UI_TOKEN }}
