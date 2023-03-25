@@ -1,4 +1,4 @@
-name: 'Chromatic'
+name: 'Chromatic 2'
 
 # Event for the workflow
 on: push
@@ -8,25 +8,15 @@ jobs:
   chromatic-deployment:
     # Operating System
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [ 17.x ]
     # Job steps
     steps:
-      - uses: actions/checkout@v2
-      - name: Staring Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-          workingDir: client
-      - name: install modules
-      - run: npm install
+      - uses: actions/checkout@v1
+      - name: Install dependencies
+        # 👇 Install dependencies with the same package manager used in the project (replace it as needed), e.g. yarn, npm, pnpm
+        run: npm install
         working-directory: client
-        # 👇 Adds Chromatic as a step in the workflow
       - name: Publish to Chromatic
         uses: chromaui/action@v1
-        # Chromatic GitHub Action options
         with:
-          # 👇 Chromatic projectToken, refer to the manage page to obtain it.
-          projectToken: ${{ secrets.UI_TOKEN }}
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN_2 }}
           workingDir: client
