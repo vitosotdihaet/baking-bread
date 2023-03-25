@@ -11,17 +11,17 @@ jobs:
     strategy:
       matrix:
         node-version: [ 17.x ]
+      with:
+        workingDir: client
     # Job steps
     steps:
       - uses: actions/checkout@v2
       - name: Staring Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
-          workingDir: client
           node-version: ${{ matrix.node-version }}
       - name: install modules
         with: 
-          workingDir: client
         run: npm install
         # 👇 Adds Chromatic as a step in the workflow
       - name: Publish to Chromatic
@@ -30,4 +30,3 @@ jobs:
         with:
           # 👇 Chromatic projectToken, refer to the manage page to obtain it.
           projectToken: ${{ secrets.UI_TOKEN }}
-          workingDir: client
