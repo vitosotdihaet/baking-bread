@@ -47,5 +47,5 @@ module.exports = async (phase, { defaultConfig }) => {
     };
     // TODO: READ ABOUT NEXT ESLINT AND STORYBOOK RULES
     // TODO: READ MORE ABOUT PHASES OF BUILD
-    return withBundleAnalyzer({}, nextConfig);
+    return nextConfig;
 };

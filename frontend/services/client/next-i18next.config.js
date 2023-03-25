@@ -1,19 +1,17 @@
 const path = require('path');
 
-/**
- * @type {import('next-i18next').UserConfig}
- */
 module.exports = {
-    // https://www.i18next.com/overview/configuration-options#logging
-    debug: process.env.NODE_ENV === 'development',
     i18n: {
-        defaultLocale: 'default',
-        locales: ['default', 'en', 'ru'],
+        defaultLocale: 'ru',
+        locales: ['en', 'ru', 'ua'],
     },
-    localePath: typeof window === 'undefined' ? path.resolve('./public/locales') : '/locales',
-    reloadOnPrerender: process.env.NODE_ENV === 'development',
-    // saveMissing: false,
-    // strictMode: true,
-    // serializeConfig: false,
-    // react: { useSuspense: false }
+    fallbackLng: {
+        default: ['ru'],
+    },
+    localePath:
+    typeof window === 'undefined'
+        ? path.resolve('./public/locales')
+        : '/locales',
+    nonExplicitSupportedLngs: true,
+    debug: process.env.NODE_ENV === 'development',
 };
