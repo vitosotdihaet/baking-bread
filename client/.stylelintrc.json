@@ -1,8 +1,7 @@
 {
     "extends": [
         "stylelint-config-standard-scss",
-        "stylelint-config-idiomatic-order",
-        "stylelint-config-airbnb"
+        "stylelint-config-idiomatic-order"
     ],
     "plugins": ["stylelint-order"],
     "rules": {
@@ -12,7 +11,7 @@
         "no-missing-end-of-source-newline": null,
         "block-no-empty": null,
         "unit-allowed-list": ["%", "deg", "px", "rem", "ms"],
-        "declaration-block-no-imortant": true,
+        "declaration-no-important": true,
         "declaration-empty-line-before": [
             "always",
             {
