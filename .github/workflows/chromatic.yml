@@ -14,7 +14,7 @@ jobs:
       - name: Install dependencies
         run: cd client && npm install
       - name: Build production project
-        run: cd client && npm run build:prod
+        run: cd client && npm run build
         if: always()
       - name: Publish to Chromatic
         uses: chromaui/action@v1
