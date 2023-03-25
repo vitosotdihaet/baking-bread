@@ -13,8 +13,10 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: "16.14.2"
+          workingDir: client
       - run: yarn install --immutable
       - uses: chromaui/action@v1
         with:
-          projectToken: ${{ secrets.UI_TOKEN }}
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          workingDir: client
           skip: 'dependabot/**'
