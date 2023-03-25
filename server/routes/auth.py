@@ -30,7 +30,7 @@ def signup_post():
     except IntegrityError:
         db.session.rollback()
 
-    return 201
+    return "something in return"
 
 @app.route('/', methods=['GET'])
 def test():

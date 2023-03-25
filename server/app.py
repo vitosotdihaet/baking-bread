@@ -33,6 +33,3 @@ with open("local_db_info.json") as ldi:
     password = info.get('password')
 
 app = create_app(db_name, password)
-
-import auth
-# import ...

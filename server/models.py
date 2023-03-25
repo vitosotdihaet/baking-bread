@@ -46,16 +46,6 @@ class User(db.Model): # has relationships with History, CurrentOrders and Addres
 		return '<User %r>' % (self.username)
 
 
-class History(db.Model): # connected to User data-table
-	id = db.Column(db.Integer, primary_key = True)
-
-	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-	date = db.Column(db.DateTime)
-	totalPrice = db.Column(db.Integer)
-	address = db.Column(db.String(100))
-
-
 class Address(db.Model): # connected to User data-table
 	id = db.Column(db.Integer, primary_key = True)
 
@@ -70,37 +60,13 @@ class Address(db.Model): # connected to User data-table
 	comment = db.Column(db.String(200))
 
 
-class Bakery(db.Model): # has a relationship with CookedGoods
-	id = db.Column(db.Integer, primary_key = True)
-	cookedGoods_rel = db.relationship('CookedGoods', backref='bakery', lazy='joined')
-
-	name = db.Column(db.String(30))
-	address = db.Column(db.String(100))
-	openTime = db.Column(db.DateTime)
-	closeTime = db.Column(db.DateTime)
+bakery_goods = db.Table('bakery_goods', # relationship table for Goods and Bakery
+	db.Column('good_id', db.Integer, db.ForeignKey('goods.id')),
+	db.Column('bakery_id', db.Integer, db.ForeignKey('bakery.id'))
+)
 
 
-class Goods(db.Model): # has relationships with CurrentGoods, CookedGoods, GoodsDetails and GoodType data-tables
-	id = db.Column(db.Integer, primary_key = True)
-	currentGoods_rel = db.relationship('CurrentGoods', backref='good', lazy='dynamic')
-	cookedGoods_rel = db.relationship('CookedGoods', backref='good', lazy='dynamic')
-	goodsDetails_rel = db.relationship('GoodsDetails', backref='good', lazy='dynamic')
-
-	good_name = db.Column(db.String, db.ForeignKey('good_types.name'))
-
-	type_good = db.Column(db.String(20))
-	image = db.Column(db.String(200))
-	available = db.Column(db.Boolean, default=False)
-	price = db.Column(db.Integer)
-	previousPrice = db.Column(db.Integer)
-	weight = db.Column(db.Integer)
-	lifetime = db.Column(db.Integer)
-
-	description = db.Column(db.String(200))
-	quantity = db.Column(db.Integer)
-
-
-class CookedGoods(db.Model): # connected to Goods and Bakery data-tables
+class CookedGoods(db.Model): # relationship table with extra data (related to cooked goods) for Goods and Bakery
 	id = db.Column(db.Integer, primary_key = True)
 
 	good_id = db.Column(db.Integer, db.ForeignKey('goods.id'))
@@ -110,9 +76,26 @@ class CookedGoods(db.Model): # connected to Goods and Bakery data-tables
 	cookedAt = db.Column(db.DateTime)
 
 
-class CurrentOrders(db.Model): # has a relationship with CurrentGoods data-table and connected to User data-table 
+class CurrentGoods(db.Model): # relationship table with extra data (related to current goods) for Goods and CurrentOrders
 	id = db.Column(db.Integer, primary_key = True)
-	currentGoods_rel = db.relationship('CurrentGoods', backref='current_order', lazy='joined')
+
+	good_id = db.Column(db.Integer, db.ForeignKey('goods.id'))
+	order_id = db.Column(db.Integer, db.ForeignKey('current_orders.id'))
+
+	quantity = db.Column(db.Integer)
+
+
+class HistoryGoods(db.Model): # relationship table with extra data (related to history goods) for Goods and History
+	id = db.Column(db.Integer, primary_key = True)
+
+	good_id = db.Column(db.Integer, db.ForeignKey('goods.id'))
+	history_id = db.Column(db.Integer, db.ForeignKey('history.id'))
+	quantity = db.Column(db.Integer)
+
+
+class CurrentOrders(db.Model): # has relationship with Goods via CurrentGoods and connected to User data-table 
+	id = db.Column(db.Integer, primary_key = True)
+	currentGoods = db.relationship('Goods', secondary='current_goods', lazy='joined')
 
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -120,14 +103,47 @@ class CurrentOrders(db.Model): # has a relationship with CurrentGoods data-table
 	totalPrice = db.Column(db.Integer)
 	address = db.Column(db.String(100))
 	ended = db.Column(db.Boolean, default=False)
-	comments = db.Column(db.String(200))
 
 
-class CurrentGoods(db.Model): # connected to Goods and CurrentOrders data-tables
+class History(db.Model): # has relationship with Goods via HistoryGoods and connected to User data-table 
 	id = db.Column(db.Integer, primary_key = True)
+	historyGoods = db.relationship('Goods', secondary='history_goods', lazy='joined')
 
-	good_id = db.Column(db.Integer, db.ForeignKey('goods.id'))
-	order_id = db.Column(db.Integer, db.ForeignKey('current_orders.id'))
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+	date = db.Column(db.DateTime)
+	totalPrice = db.Column(db.Integer)
+	address = db.Column(db.String(100))
+	comment = db.Column(db.String(200))
+
+
+class Bakery(db.Model): # has a relationship with CookedGoods and Goods via bakery_goods
+	id = db.Column(db.Integer, primary_key = True)
+	cookedGoods_rel = db.relationship('CookedGoods', backref='bakery', lazy='joined')
+	bakeryGoods = db.relationship('Goods', secondary=bakery_goods, lazy='joined')
+
+	name = db.Column(db.String(30))
+	address = db.Column(db.String(100))
+	openTime = db.Column(db.DateTime)
+	closeTime = db.Column(db.DateTime)
+
+
+class Goods(db.Model): # has relationships with CurrentGoods, CookedGoods, GoodsDetails and GoodType data-tables
+	id = db.Column(db.Integer, primary_key = True)
+	cookedGoods_rel = db.relationship('CookedGoods', backref='good', lazy='dynamic')
+	goodsDetails_rel = db.relationship('GoodsDetails', backref='good', lazy='dynamic')
+
+	type_name = db.Column(db.String, db.ForeignKey('good_types.name'))
+
+	good_name = db.Column(db.String(20))
+	image = db.Column(db.String(200))
+	available = db.Column(db.Boolean, default=False)
+	price = db.Column(db.Integer)
+	previousPrice = db.Column(db.Integer)
+	weight = db.Column(db.Integer)
+	lifetime = db.Column(db.Integer)
+	description = db.Column(db.String(200))
+	quantity = db.Column(db.Integer)
 
 
 class GoodsDetails(db.Model): # has a relationship with Images data-table and connected to Goods data-table 

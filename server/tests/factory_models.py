@@ -36,13 +36,6 @@ class HistoryFactory(factory.alchemy.SQLAlchemyModelFactory):
         model = History
 
 
-# class HistoryGoodsFactory(factory.alchemy.SQLAlchemyModelFactory):
-#     id = factory.Sequence(lambda n: '%s' % n)
-
-#     class Meta:
-#         model = HistoryGoods
-
-
 class AddressFactory(factory.alchemy.SQLAlchemyModelFactory):
     id = factory.Sequence(lambda n: '%s' % n)
     
@@ -108,13 +101,6 @@ class CurrentOrdersFactory(factory.alchemy.SQLAlchemyModelFactory):
 
     class Meta:
         model = CurrentOrders
-
-
-# class CurrentGoodsFactory(factory.alchemy.SQLAlchemyModelFactory):
-#     id = factory.Sequence(lambda n: '%s' % n)
-
-#     class Meta:
-#         model = CurrentGoods
 
 
 class GoodsDetailsFactory(factory.alchemy.SQLAlchemyModelFactory):

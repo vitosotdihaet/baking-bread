@@ -1,5 +1,5 @@
 def deploy():
-    from app import create_app,db
+    from app import app, db
     from flask_migrate import upgrade,migrate,init,stamp
 
     from models import User, Address, CurrentOrders, History
@@ -8,12 +8,6 @@ def deploy():
 
     import json
 
-    with open("local_db_info.json") as ldi:
-        info = json.load(ldi)
-        db_name = info.get('name')
-        password = info.get('password')
-
-    app = create_app(db_name, password)
     app.app_context().push()
 
     # create database and tables
