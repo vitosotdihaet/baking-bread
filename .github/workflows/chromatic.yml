@@ -1,9 +1,9 @@
-name: UI-check
+name: 'UI-check'
 
 on: push
 
 jobs:
-  pipeline:
+  chromatic-deployment:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -24,4 +24,3 @@ jobs:
         with:
           projectToken: ${{ secrets.UI_TOKEN }}
           workingDir: client
-          skip: 'dependabot/**'
