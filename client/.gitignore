@@ -1,6 +1,0 @@
-node_modules
-/build
-.env
-.next
-next-env.d.ts
-storybook-static
