@@ -8,8 +8,7 @@ const buildWebpackConfig = (
     config,
 ) => {
     buildPlugins(config);
-
-    config.resolve.mainFiles.push('index');
+    buildRules(config);
 
     return config;
 };
