@@ -17,6 +17,6 @@ jobs:
       - run: yarn install --immutable
       - uses: chromaui/action@v1
         with:
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          projectToken: ${{ secrets.UI_TOKEN }}
           workingDir: client
           skip: 'dependabot/**'
