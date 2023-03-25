@@ -1,6 +1,7 @@
 import {
     ButtonHTMLAttributes, FC, memo, ReactNode,
 } from 'react';
+import cls from './Button.module.scss';
 
 export enum ButtonTheme {
     CLEAR = 'clear',
@@ -39,6 +40,7 @@ export const Button: FC<ButtonProps> = memo((props: ButtonProps) => {
 
     return (
         <button
+            className={cls.Button}
             type='button'
             disabled={disabled}
             {...otherProps}
