@@ -1,4 +1,3 @@
-name: 'Chromatic Publish'
 
 on: push
 
@@ -14,7 +13,36 @@ jobs:
         with:
           node-version: "16.14.2"
           workingDir: client
-      - run: npm i
+      - run: yarn install --immutable
+      - uses: chromaui/action@v1
+        with:
+          projectToken: ${{ secrets.UI_TOKEN }}
+          workingDir: client
+          skip: 'dependabot/**'
+
+
+name: UI-check
+
+on: push
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 18.x ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Staring Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: install modules
+        with: 
+          workingDir: client
+        run: npm install
+        if: always()
       - uses: chromaui/action@v1
         with:
           projectToken: ${{ secrets.UI_TOKEN }}
