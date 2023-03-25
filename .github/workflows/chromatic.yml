@@ -1,25 +1,20 @@
-# Workflow name
-name: 'Chromatic'
+name: 'Chromatic Publish'
 
-# Event for the workflow
 on: push
 
-# List of jobs
 jobs:
-  chromatic-deployment:
-    # Operating System
+  test:
     runs-on: ubuntu-latest
-    # Job steps
     steps:
-      - uses: actions/checkout@v1
-      - name: Install dependencies
-        # 👇 Install dependencies with the same package manager used in the project (replace it as needed), e.g. yarn, npm, pnpm
-        run: yarn
-        # 👇 Adds Chromatic as a step in the workflow
-      - name: Publish to Chromatic
-        uses: chromaui/action@v1
-        # Chromatic GitHub Action options
+      - uses: actions/checkout@v2
         with:
-          # 👇 Chromatic projectToken, refer to the manage page to obtain it.
+          fetch-depth: 0
+      - name: Use Node.js 16.14.2
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.14.2"
+      - run: yarn install --immutable
+      - uses: chromaui/action@v1
+        with:
           projectToken: ${{ secrets.UI_TOKEN }}
-          workingDir: client
+          skip: 'dependabot/**'
