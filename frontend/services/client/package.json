@@ -5,10 +5,8 @@
     "license": "MIT",
     "scripts": {
         "dev": "next dev",
-        "dev:analyze": "ANALYZE=true npm run dev",
         "lint": "next lint",
         "build": "next build",
-        "build:analyze": "ANALYZE=true npm run build",
         "start": "next start",
         "start:prod": "npm run build && npm run start",
         "lint:ts": "eslint \"**/*.{ts,tsx}\"",

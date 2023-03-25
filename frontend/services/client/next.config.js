@@ -10,10 +10,6 @@ const buildSecurityHeaders = require('./config/next/buildSecurityHeaders');
 // @ts-check
 const { i18n } = require('./next-i18next.config.js');
 
-withBundleAnalyzer({
-    enabled: process.env.ANALYZE === 'true',
-});
-
 module.exports = async (phase, { defaultConfig }) => {
     const isDev = phase === PHASE_DEVELOPMENT_SERVER;
     const isProd = phase === PHASE_PRODUCTION_BUILD;
@@ -45,7 +41,9 @@ module.exports = async (phase, { defaultConfig }) => {
         pageExtensions: ['tsx', 'ts'],
         webpack: (config) => buildWebpackConfig(config),
     };
-    // TODO: READ ABOUT NEXT ESLINT AND STORYBOOK RULES
-    // TODO: READ MORE ABOUT PHASES OF BUILD
-    return nextConfig;
+
+    return withBundleAnalyzer({
+        enabled: process.env.ANALYZE === 'true',
+        openAnalyzer: false,
+    })(nextConfig);
 };
