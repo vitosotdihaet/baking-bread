@@ -1,3 +1,4 @@
 .env
+migrations
 
 local_db_info.json
