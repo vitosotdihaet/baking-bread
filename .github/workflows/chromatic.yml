@@ -20,8 +20,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
           workingDir: client
       - name: install modules
-        with: 
-        run: npm install
+      - run: npm install
         working-directory: client
         # 👇 Adds Chromatic as a step in the workflow
       - name: Publish to Chromatic
