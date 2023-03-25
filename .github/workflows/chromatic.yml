@@ -17,8 +17,11 @@ jobs:
       - name: Staring Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
+          workingDir: client
           node-version: ${{ matrix.node-version }}
       - name: install modules
+        with: 
+          workingDir: client
         run: npm install
         # 👇 Adds Chromatic as a step in the workflow
       - name: Publish to Chromatic
