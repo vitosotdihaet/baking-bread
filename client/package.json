@@ -20,7 +20,7 @@
         "test:ui:exit": "chromatic --exit-zero-on-changess",
         "storybook": "storybook dev -p 6006 -c ./config/storybook",
         "build-storybook": "storybook build -c ./config/storybook",
-        "chromatic": "npx chromatic --project-token=  f8a06fbca5f6"
+        "chromatic": "npx chromatic --project-token=f8a06fbca5f6"
     },
     "dependencies": {
         "next": "^13.2.4",
