@@ -52,7 +52,10 @@
     "config/build/loaders/buildNextFileLoader.js",
     "config/build/buildRules.js",
     "config/build/buildWebpackConfig.js",
-    "build/types/**/*.ts"
+    "build/types/**/*.ts",
+    "./config/jest/setupTests.ts",
+     "./src/**/*.ts", 
+     "./src/**/*.tsx"
   ],
   "exclude": [
     "node_modules"
