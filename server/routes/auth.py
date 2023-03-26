@@ -128,7 +128,7 @@ def login_post():
 def refresh():
     identity = get_jwt_identity() # getting id of our user from token
 
-    access_token = create_access_token(identity=identity)
+    access_token = create_access_token(identity=identity, additional_claims={"is_administrator": False})
 
     return jsonify(access_token=access_token)
 
