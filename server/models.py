@@ -15,7 +15,7 @@ class User(db.Model): # has relationships with History, CurrentOrders and Addres
 	password_hash = db.Column(db.String(128))
 	balance = db.Column(db.Integer)
 	birthday = db.Column(db.Date)
-	phone = db.Column(db.String(12))
+	phone = db.Column(db.String(21))
 	role = db.Column(db.String(10))
 
 	@property
