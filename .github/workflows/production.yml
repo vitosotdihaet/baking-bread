@@ -1,0 +1,42 @@
+name: 'Test Production Build'
+
+on: 
+  push:
+    branches: [ 'main' ]
+  pull_request:
+    branches: [ 'main' ]
+
+jobs:
+  UI-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install dependencies
+        run: cd frontend/services/client && npm install
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        with:
+          projectToken: ${{ secrets.UI_TOKEN }}
+          workingDir: frontend/services/client
+  Unit-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install dependencies
+        run: cd frontend/services/client && npm install
+      - name: Unit testing
+        if: always()
+        run: cd frontend/services/client && npm run test:unit
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install dependencies
+        run: cd frontend/services/client && npm install
+      - name: Build production project
+        run: cd frontend/services/client && npm run build
+        if: always()
+      - name: Linting typescript
+        run: cd frontend/services/client && npm run lint:ts
+      - name: Linting css
+        run: cd frontend/services/client && npm run lint:scss
