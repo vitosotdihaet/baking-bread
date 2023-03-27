@@ -22,7 +22,7 @@ class InvalidApi(Exception): # editable class template for all kinds of errors
 
     def to_dict(self):
         for_json = dict()
-        for_json['Error'] = self.error
+        for_json['Message'] = self.error
         
         return for_json
 
