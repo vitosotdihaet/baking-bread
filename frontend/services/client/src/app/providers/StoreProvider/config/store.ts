@@ -1,11 +1,12 @@
 import {
     Action,
-    Reducer,
     CombinedState,
     configureStore,
+    Reducer,
     ReducersMapObject,
     ThunkAction,
 } from '@reduxjs/toolkit';
+import { userState } from 'features/UserList';
 import { createWrapper } from 'next-redux-wrapper';
 import { $api } from 'shared/api/api';
 import { createReducerManager } from './reducerManager';
@@ -17,6 +18,7 @@ export const createReduxStore = (
 ) => {
     const rootReducers: ReducersMapObject<StateSchema> = {
         ...asyncReducers,
+        [userState.name]: userState.reducer,
     };
 
     const reducerManager = createReducerManager(rootReducers);
@@ -45,9 +47,10 @@ export const createReduxStore = (
 export type AppStore = ReturnType<typeof createReduxStore>;
 export type AppState = ReturnType<AppStore['getState']>;
 export type AppDispatch = AppStore['dispatch'];
-export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppState, unknown, Action>;
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, AppState, ThunkExtraArg, Action>;
 
 export const wrapper = createWrapper<AppStore>(
+    // @ts-ignore
     createReduxStore,
     { debug: process.env.NODE_ENV === 'development' },
 );
