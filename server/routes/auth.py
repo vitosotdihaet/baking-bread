@@ -1,24 +1,20 @@
 from functools import wraps
 
 from app import db, app, jwt
+
 from flask import abort, jsonify, request, redirect, url_for
 from flask_jwt_extended import (
     jwt_required, create_access_token,
     create_refresh_token, get_jwt_identity, set_access_cookies,
     set_refresh_cookies, unset_jwt_cookies, verify_jwt_in_request, get_jwt
 )
-from sqlalchemy.exc import IntegrityError
+
 from models import User
 
 from api_calls.error import ApiError
 
 
 # ERROR HANDLING PART
-
-@app.errorhandler(ApiError) # errorhandler for @app.routes for all kinds of errors (executes with `raise ApiError({some data})`)
-def error_response_callback(error):
-    return jsonify(error.to_dict()), error.status_code
-
 
 @jwt.invalid_token_loader
 def invalid_token_callback(error_string):
@@ -42,8 +38,8 @@ def no_fresh_token_callback(jwt_header, jwt_payload):
 
 # AUTHENTIFICATION PART
 
-# Here is a custom decorator that verifies the token is present in the request,
-# as well as insuring that the token has a claim indicating that this user is
+# A custom decorator that verifies that token is present in the request,
+# as well as insuring that the token has a claim indicating that the user is
 # an administrator
 def admin_required():
     def wrapper(fn):
@@ -56,8 +52,7 @@ def admin_required():
 
             if claims['is_administrator']:
                 return fn(*args, **kwargs)
-            else:
-                return jsonify(Error='ADMIN_RIGHTS_REQUIRED'), 403
+            return jsonify(Error='ADMIN_RIGHTS_REQUIRED'), 403
 
         return decorator
 
@@ -201,12 +196,6 @@ def admin_protected():
     identity = get_jwt_identity()
 
     return jsonify(Access='approved', Identity=identity)
-
-
-# all users have access to this endpont (no access token required)
-@app.route('/', methods=['GET'])
-def test():
-    return jsonify(Hello='world')
 
 
 # # this decorator is mostly used for debugging
