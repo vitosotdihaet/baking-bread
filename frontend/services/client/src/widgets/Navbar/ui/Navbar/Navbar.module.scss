@@ -1,0 +1,29 @@
+.nav {
+    position: fixed;
+    z-index: var(--navbar-index);
+    top: 0;
+    left: 0;
+    width: 100vw;
+    box-shadow: 0 -0.5rem 2rem rgb(0 0 0 / 40%);
+    padding: 1rem 0rem;
+}
+
+.locationIcon {
+    margin-right: 0.75rem;
+}
+
+.navTop {
+    width: min(600px, 90vw);
+    margin: 0rem auto;
+    margin-bottom: 1rem;
+}
+
+.deliveryInfo {
+    flex-grow: 1;
+}
+
+.deliveryTime {
+    font-size: 0.875rem;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+}

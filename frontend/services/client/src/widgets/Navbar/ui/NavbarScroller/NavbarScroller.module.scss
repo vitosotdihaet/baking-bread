@@ -1,0 +1,24 @@
+.scroller {
+    width: 100vw;
+    padding: 0 5vw;
+    -ms-overflow-style: none;
+    overflow-x: scroll;
+    scrollbar-width: none;
+    scrollbar-width: 0;
+    white-space: nowrap;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.tab {
+    outline: none;
+}
+
+.selected {
+    font-family: var(--font-family-sans);
+}
