@@ -1,14 +1,14 @@
-import type { AppProps } from 'next/app';
 import { appWithTranslation } from 'next-i18next';
 import { wrapper } from 'app/providers/StoreProvider';
 import { StoreProvider } from 'app/providers/StoreProvider/ui/StoreProvider';
+import type { AppProps } from 'next/app';
+import 'src/app/styles/index.scss';
 
 interface PageProps {
     pageProps: {
         id: number;
     };
 }
-
 const MyApp = ({ Component, ...rest }: Omit<AppProps, 'pageProps'> & PageProps) => {
     const { store, props } = wrapper.useWrappedStore(rest);
 
@@ -18,14 +18,5 @@ const MyApp = ({ Component, ...rest }: Omit<AppProps, 'pageProps'> & PageProps) 
         </StoreProvider>
     );
 };
-
-// MyApp.getInitialProps = wrapper.getInitialAppProps((store) => async (appCtx): Promise<PageProps> => {
-//     const childrenGip = await App.getInitialProps(appCtx);
-//     return {
-//         pageProps: {
-//             ...childrenGip.pageProps,
-//         },
-//     };
-// });
 
 export default appWithTranslation(MyApp);
