@@ -1,0 +1,77 @@
+.Typography {
+    display: inline-block;
+}
+
+.h1 {
+    font: var(--font-xl);
+}
+
+.h2 {
+    font: var(--font-lg);
+}
+
+.h3 {
+    font: var(--font-md);
+}
+
+.h4 {
+    font: var(--font-sm);
+}
+
+.h5 {
+    font: var(--font-xs);
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5 {
+    font-weight: bold;
+}
+
+.p,
+.div {
+    font: var(--font-sm);
+}
+
+.div {
+    display: block;
+}
+
+.subtitle {
+    font: var(--font-md);
+    font-weight: bold;
+}
+
+.center {
+    text-align: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+}
+
+.inherit {
+    text-align: inherit;
+}
+
+.noWrap {
+    white-space: nowrap;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+.gt {
+    font-family: var(--font-family-main);
+}
+
+.sans {
+    font-family: var(--font-family-sans);
+}
