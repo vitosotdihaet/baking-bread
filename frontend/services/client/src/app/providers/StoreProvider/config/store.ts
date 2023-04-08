@@ -6,7 +6,6 @@ import {
     ReducersMapObject,
     ThunkAction,
 } from '@reduxjs/toolkit';
-import { userState } from 'features/UserList';
 import { createWrapper } from 'next-redux-wrapper';
 import { $api } from 'shared/api/api';
 import { createReducerManager } from './reducerManager';
@@ -18,7 +17,6 @@ export const createReduxStore = (
 ) => {
     const rootReducers: ReducersMapObject<StateSchema> = {
         ...asyncReducers,
-        [userState.name]: userState.reducer,
     };
 
     const reducerManager = createReducerManager(rootReducers);

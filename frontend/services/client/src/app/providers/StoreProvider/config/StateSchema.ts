@@ -1,4 +1,3 @@
-import { AuthSchema, authState } from 'features/Auth';
 import {
     Reducer,
     AnyAction,
@@ -7,14 +6,10 @@ import {
     ReducersMapObject,
 } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { userState } from 'features/UserList';
-import { UserSchema } from 'features/UserList/model/types/user';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface StateSchema {
-    [userState.name]: UserSchema;
 
-    // async
-    [authState.name]?: AuthSchema;
 }
 
 export type StateSchemaKey = keyof StateSchema;
