@@ -11,7 +11,10 @@ class MyDocument extends Document {
         const currentLocale = i18nextConfig.i18n.defaultLocale;
         return (
             <Html lang={currentLocale}>
-                <Head />
+                <Head>
+                    <link rel='manifest' href='manifest.json' />
+                    <meta name='theme-color' content='#fff' />
+                </Head>
                 <body>
                     <Main />
                     <NextScript />
