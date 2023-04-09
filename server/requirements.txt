@@ -9,4 +9,5 @@ flask-jwt-extended
 psycopg2
 python-dotenv
 marshmallow-sqlalchemy
+marshmallow
 flasgger
