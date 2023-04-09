@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from flask_marshmallow import Marshmallow
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
+from flasgger import Swagger
 
 import json
 from datetime import timedelta
@@ -32,6 +33,7 @@ def create_app(db_name, password):
     ma.init_app(app)
     jwt.init_app(app)
     cors.init_app(app)
+    swagger.init_app(app)
 
     return app
 
@@ -41,6 +43,7 @@ migrate = Migrate()
 ma = Marshmallow()
 jwt = JWTManager()
 cors = CORS()
+swagger = Swagger(template_file='routes/api_docs/api_docs.yml')
 
 with open("local_db_info.json") as ldi:
     info = json.load(ldi)

@@ -1,0 +1,590 @@
+swagger: '2.0'
+
+################################################################################
+#                              API Information                                 #
+################################################################################
+info:
+  title: 'Baking Bread API DOCS'
+  description: |
+      # GOODS CRUD API
+
+      ## FOR USAGE 
+
+      Just scroll down to the interactive API requests!
+
+      If any not really understandable `errors` occur, contact ***@Eugene Toropkin***
+
+      ## REQUEST HTTP METHODS 
+
+      - To `create` good types or goods use ***POST*** method
+
+      - To `get` good types or goods use ***GET*** method
+
+      - To `update` good types or goods use ***PATCH*** method
+
+      - To `delete` good types or goods use ***DELETE*** method
+
+      ### Note!
+
+      ```
+
+
+      In the next examples we will use base URL  "baking-bread.com".
+
+      Due testing we likely will use ngrok host URL.
+
+
+      ```
+
+      ## GOOD TYPES CRUD 
+
+      ### Creating a good type
+
+      To create a good type we have to send request to `baking-bread.com/api/good_types` using ***POST*** method.
+
+      In the body of the request server expects `JSON` with the following *required* fields: 
+
+      ```
+      {
+          "name": "good_type_name",
+          "description": "good_type_description",
+          "order": 1
+      }
+      ```
+
+      ### Getting good types
+
+      To get all good types we have to send request to `baking-bread.com/api/good_types` using ***GET*** method.
+
+      Available query params for getting good types: 
+
+      - In the `select` parameter we can set desired fields name to get, separated by coma: 
+
+          - Valid fields to select in good types: 
+
+              - `id` - ID of a good type in the database, type  **integer**
+
+              - `name` - name of a good type, type  **string**
+
+              - `description` - description of a good type, type  **string**
+
+              - `goodsCount` - count of goods related to good type, type  **integer**
+
+              - `order` - order of a good type as its place in the menu, type  **integer**
+
+          
+
+      Example:  `baking-bread.com/api/good_types?select=name,id,goodsCount,order`
+
+          
+
+      - In the `expand` parameter we can set *required* value `goods` to get list of goods related to 
+      good types we get in the response 
+          
+          
+
+      Example:  `baking-bread.com/api/good_types?expand=goods`
+          
+
+      Additionally we can use *expand* value parameter we already know as `select` for the expand value `goods` :
+
+      - In the `select` parameter we can set desired fields name to get, separated by coma: 
+
+          - Valid fields to select in good types: 
+
+              - `id` - ID of a good in the database, type  **integer**
+
+              - `name` - name of a good type, type  **string**
+
+              - `description` - description of a good type, type  **string**
+
+              - ***Other fields coming soon...***
+
+
+      Example:  `baking-bread.com/api/good_types?expand=goods.select=name,id`
+
+      To get desired good type by ID we have to send request to `baking-bread.com/api/good_types/<id>` using ***GET*** method, where `<id>` is the ID of a good type we want to get.
+
+
+      Example:  `baking-bread.com/api/good_types/1`
+
+      ### Updating a good type
+
+      To update the good type we have to send request to `baking-bread.com/api/good_types` using ***PATCH*** method.
+
+      In the body of request server expects `JSON` with the following *optional* fields:
+
+      ```python
+      {
+          "name": "UPDATED_good_type_name",
+          "description": "UPDATED_good_type_description",
+          "order": 2
+      }
+      ```
+
+
+      ### Note! 
+
+      ```
+
+      Other detailed goods CRUD API DOCS coming soon!
+
+      ```
+
+      -----------------------------------------------
+
+
+      # TRY OUT API BY YOURSELF!)
+  version: 'beta 0.0.1'
+
+################################################################################
+#                            Host, Content Types                               #
+################################################################################
+# The host (name or ip) serving the API
+host: cff4-95-29-57-226.ngrok-free.app/
+
+# Format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# Format of the responses to the client (Accepts)
+produces:
+  - application/json
+
+################################################################################
+#                                    Paths                                     #
+################################################################################
+paths:
+  '/api/good_types':
+    post:
+      operationId: create_good_type
+      tags:
+        - Good types API
+      summary: Create good type
+      description: |
+        **The below table defines the HTTP Status codes that this API may return**
+        
+        | Status Code      | Description | Reason                             |
+        | ---------------- | ------------| -----------------------------------|
+        | 201              | CREATED     | If a good type is created successfuly.   |
+        | 400              | BAD REQUEST | If JSON in the body of the request failed validation (check the response message for more info)|
+        | 405              | METHOD NOT ALLOWED| If endpoint doesn't support given request method|
+        | 409              | CONFLICT | If try to add existing good type: GOOD_TYPE_ALREADY_EXISTS|
+      produces:
+      - application/json
+      consumes:
+        - application/json
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+      parameters:
+        - in: body
+          name: body
+          description: Server expects JSON with the following required fields
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                maxLength: 20
+                minLength: 1
+                description: name of a good type
+                required: true
+              description:
+                type: string
+                maxLength: 200
+                minLength: 1
+                description: description of a good type
+                required: true
+              order:
+                type: integer
+                description: order of a good type placed in the menu
+                required: true
+      responses:
+        201:
+          description: Created a good type
+        409:
+          description: Good type we try to add already exists
+        400:
+          description: JSON in the body of the request failed validation (check the response message for more info)
+        405:
+          description: Request method is not allowed for this endpoint
+
+    get:
+      tags:
+        - Good types API
+      operationId: get_good_types
+      summary: Get good types
+      description: GET request for getting all of the good types
+      produces:
+      - application/json
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+      parameters:
+      - in: query
+        name: select
+        description: select desired fields of good types you want to get, separated by coma (e.g. 'name,id')
+        type: string
+      - in: query
+        name: expand
+        description: set value to 'goods' or e.g. 'goods.select=name' (already known param, but applies to goods in the list) to get list of all related goods in each good type
+        type: string
+      - in: query
+        name: sort
+        description: set value to 'asc' or 'desc' to sort in the ascending or descending order (if sort is not set, 'sort=asc' is by default) 
+        type: string
+      responses:
+        200:
+          description: Got JSON response
+        400:
+          description: Typically invalid Query Params usage
+        409:
+          description: No good types have been added
+        405:
+          description: Request method is not allowed for this endpoint
+
+  '/api/good_types/{id}':
+    get:
+      tags:
+        - Good types API
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+      operationId: get_good_type_by_id
+      summary: Get good type by its ID
+      description: GET request for getting good type by its ID
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: Requesting good type by its ID
+        required: true
+        type: integer
+      - in: query
+        name: select
+        description: select desired fields of good type you want to get, separated by coma (e.g. 'name,id')
+        type: string
+      - in: query
+        name: expand
+        description: set value to 'goods' or e.g. 'goods.select=name' (already known param, but applies to goods in the list) to get list of all related goods in good type
+        type: string
+      responses:
+        200:
+          description: Got JSON response
+        400:
+          description: Typically invalid Query Params usage
+        409:
+          description: No good types have been added or good type doesnt exist
+        405:
+          description: Request method is not allowed for this endpoint
+    
+    patch:
+      operationId: update_good_type_by_id
+      tags:
+        - Good types API
+      summary: Update good type
+      description: PATCH request for updating good type by its ID
+      produces:
+      - application/json
+      consumes:
+        - application/json
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+      parameters:
+        - name: id
+          in: path
+          description: Requesting good type by its ID
+          required: true
+          type: integer
+        - in: body
+          name: body
+          description: Server expects JSON with the following optional fields
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                maxLength: 20
+                minLength: 1
+                description: name of a good type
+              description:
+                type: string
+                maxLength: 200
+                minLength: 1
+                description: description of a good type
+              order:
+                type: integer
+                description: order of a good type placed in the menu
+      responses:
+        200:
+          description: Updated a good type
+        400:
+          description: JSON in the body of the request failed validation (check the response message for more info)
+        405:
+          description: Request method is not allowed for this endpoint
+        409:
+          description: No good types have been added or good type doesnt exist
+
+    delete:
+      operationId: delete_good_type_by_id
+      tags:
+        - Good types API
+      summary: Delete good type
+      description: DELETE request for deleting good type by its ID
+      produces:
+      - application/json
+      consumes:
+        - application/json
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+      parameters:
+        - name: id
+          in: path
+          description: Requesting good type by its ID
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Deleted a good type
+        409:
+          description: No good types have been added or good type doesnt exist
+        405:
+          description: Request method is not allowed for this endpoint
+
+  '/api/good_types/{id}/goods':
+    post:
+      operationId: create_good
+      tags:
+        - Goods API
+      summary: Create good related to good type with desired ID
+      description: POST request for creating goods
+      produces:
+      - application/json
+      consumes:
+        - application/json
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+      parameters:
+        - name: id
+          in: path
+          description: Requesting good type by its ID
+          required: true
+          type: integer
+        - in: body
+          name: body
+          description: Server expects JSON with the following required fields, except for 'previousPrice', which is optional
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                maxLength: 20
+                minLength: 1
+                description: name of a good
+                required: true
+              description:
+                type: string
+                maxLength: 200
+                minLength: 1
+                description: description of a good
+                required: true
+              image:
+                type: string
+                maxLength: 200
+                minLength: 1
+                description: image of a good
+                required: true
+              available:
+                type: boolean
+                description: availability of a good
+                required: true
+              previousPrice:
+                type: integer
+                description: previous price of a good
+              price:
+                type: integer
+                description: price of a good
+                required: true
+              weight:
+                type: integer
+                description: weight of a good
+                required: true
+              lifetime:
+                type: integer
+                description: weight of a good
+                required: true
+              quantity:
+                type: integer
+                description: weight of a good
+                required: true
+      responses:
+        201:
+          description: Created a good
+        409:
+          description: Good we try to add already exists or good type doesnt exist
+        400:
+          description: JSON in the body of the request failed validation (check the response message for more info)
+        405:
+          description: Request method is not allowed for this endpoint
+
+  '/api/good_types/goods':
+    get:
+      tags:
+        - Goods API
+      operationId: get_goods
+      summary: Get goods
+      description: GET request for getting all of the goods
+      produces:
+      - application/json
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+      parameters:
+      - in: query
+        name: select
+        description: select desired fields of goods you want to get, separated by coma (e.g. 'name,id')
+        type: string
+      responses:
+        200:
+          description: Got JSON response
+        400:
+          description: Typically invalid Query Params usage
+        409:
+          description: No goods have been added
+        405:
+          description: Request method is not allowed for this endpoint
+
+  '/api/good_types/goods/{id}':
+    get:
+      tags:
+        - Goods API
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+      operationId: get_good_by_id
+      summary: Get good by its ID
+      description: GET request for getting good by its ID
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        description: Requesting good by its ID
+        required: true
+        type: integer
+      - in: query
+        name: select
+        description: select desired fields of good you want to get, separated by coma (e.g. 'name,id')
+        type: string
+      responses:
+        200:
+          description: Got JSON response
+        400:
+          description: Typically invalid Query Params usage
+        409:
+          description: No goods have been added or good doesnt exist
+        405:
+          description: Request method is not allowed for this endpoint
+    
+    patch:
+      operationId: update_good_by_id
+      tags:
+        - Goods API
+      summary: Update good
+      description: PATCH request for updating good by its ID
+      produces:
+      - application/json
+      consumes:
+        - application/json
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+      parameters:
+        - name: id
+          in: path
+          description: Requesting good type by its ID
+          required: true
+          type: integer
+        - in: body
+          name: body
+          description: Server expects JSON with the following optional fields
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                maxLength: 20
+                minLength: 1
+                description: name of a good
+              description:
+                type: string
+                maxLength: 200
+                minLength: 1
+                description: description of a good
+              image:
+                type: string
+                maxLength: 200
+                minLength: 1
+                description: image of a good
+              available:
+                type: boolean
+                description: availability of a good
+              previousPrice:
+                type: integer
+                description: previous price of a good
+              price:
+                type: integer
+                description: price of a good
+              weight:
+                type: integer
+                description: weight of a good
+              lifetime:
+                type: integer
+                description: weight of a good
+              quantity:
+                type: integer
+                description: weight of a good
+      responses:
+        200:
+          description: Updated a good
+        400:
+          description: JSON in the body of the request failed validation (check the response message for more info)
+        405:
+          description: Request method is not allowed for this endpoint
+        409:
+          description: No goods have been added or good doesnt exist
+
+    delete:
+      operationId: delete_good_by_id
+      tags:
+        - Goods API
+      summary: Delete good
+      description: DELETE request for deleting good by its ID
+      produces:
+      - application/json
+      consumes:
+        - application/json
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+      parameters:
+        - name: id
+          in: path
+          description: Requesting good type by its ID
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Deleted a good
+        409:
+          description: No goods have been added or good doesnt exist
+        405:
+          description: Request method is not allowed for this endpoint

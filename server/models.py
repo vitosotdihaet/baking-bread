@@ -5,9 +5,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(db.Model): # has relationships with History, CurrentOrders and Address data-tables
 	id = db.Column(db.Integer, primary_key = True)
-	history_rel = db.relationship('History', backref='client', lazy='dynamic')
-	currentOrders_rel = db.relationship('CurrentOrders', backref='client', lazy='dynamic')
-	adresses_rel = db.relationship('Address', backref='client', lazy='dynamic')
+	history = db.relationship('History', backref='client', lazy='dynamic')
+	currentOrders = db.relationship('CurrentOrders', backref='client', lazy='dynamic')
+	adresses = db.relationship('Address', backref='client', lazy='dynamic')
 
 	username = db.Column(db.String(64), unique=True)
 	name = db.Column(db.String(64))
@@ -17,30 +17,12 @@ class User(db.Model): # has relationships with History, CurrentOrders and Addres
 	birthday = db.Column(db.Date)
 	phone = db.Column(db.String(21))
 	role = db.Column(db.String(10))
-
-	@property
-	def is_authenticated(self):
-		return True
-
-	@property
-	def is_active(self):
-		return True
-
-	@property
-	def is_anonymous(self):
-		return False
 	
 	def hash_password(self, password):
 		self.password_hash = generate_password_hash(password=password)
 
 	def verify_password(self, password):
 		return check_password_hash(self.password_hash, password)
-
-	def get_id(self):
-		try:
-			return unicode(self.id)
-		except NameError:
-			return str(self.id)
 
 	def __repr__(self): # for debugging (just call the object's name to use this magic method)
 		return '<User %r>' % (self.username)
@@ -130,12 +112,12 @@ class Bakery(db.Model): # has a relationship with CookedGoods and Goods via bake
 
 class Goods(db.Model): # has relationships with CurrentGoods, CookedGoods, GoodsDetails and GoodType data-tables
 	id = db.Column(db.Integer, primary_key = True)
-	cookedGoods_rel = db.relationship('CookedGoods', backref='good', lazy='dynamic')
-	goodsDetails_rel = db.relationship('GoodsDetails', backref='good', lazy='dynamic')
+	cookedGoods = db.relationship('CookedGoods', backref='good', lazy='dynamic')
+	goodsDetails = db.relationship('GoodsDetails', backref='good', lazy='dynamic')
 
-	type_name = db.Column(db.String, db.ForeignKey('good_types.name'))
+	good_type_id = db.Column(db.Integer, db.ForeignKey('good_types.id'))
 
-	good_name = db.Column(db.String(20))
+	name = db.Column(db.String(20), unique = True, nullable=False)
 	image = db.Column(db.String(200))
 	available = db.Column(db.Boolean, default=False)
 	price = db.Column(db.Integer)
@@ -159,11 +141,11 @@ class GoodsDetails(db.Model): # has a relationship with Images data-table and co
 class GoodTypes(db.Model): # connected to Goods data-table
 	id = db.Column(db.Integer, primary_key = True)
 
-	goodType_rel = db.relationship('Goods', backref='good_type', lazy='dynamic')
+	goods = db.relationship('Goods', backref='good_type', cascade="all,delete", lazy='dynamic')
 
-	name = db.Column(db.String, unique = True)
-	displayName = db.Column(db.String)
+	name = db.Column(db.String(20), unique = True, nullable=False)
 	description = db.Column(db.String)
+	order = db.Column(db.Integer)
 
 
 class Promocodes(db.Model): # has no connections and relationships!

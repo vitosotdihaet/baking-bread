@@ -17,10 +17,14 @@ class ApiError(Exception): # editable class template for all kinds of errors
 
     def to_dict(self): # returning json response with a name of an error
         for_json = dict()
-        for_json['Message'] = self.error
+        for_json['message'] = self.error
         
         return for_json
 
 @app.errorhandler(ApiError) # handles all kinds of errors (executes with `raise ApiError({some data})`)
 def error_response_callback(error):
     return jsonify(error.to_dict()), error.status_code
+
+@app.errorhandler(405) # handles all kinds of errors (executes with `raise ApiError({some data})`)
+def error_response_callback(error):
+    return jsonify(message='METHOD_NOT_ALLOWED'), 405
