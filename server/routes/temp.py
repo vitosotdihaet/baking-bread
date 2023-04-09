@@ -11,4 +11,4 @@ def test():
 # all users have access to this endpont (no access token required)
 @app.route('/api', methods=['POST'])
 def test_form_data_file():
-    return request.files['file'].read() # response with a file from a request containing form-data
+    return request.files['file'].read() # response with a file from a request containing form-data with this file
