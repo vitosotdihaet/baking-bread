@@ -25,6 +25,6 @@ class ApiError(Exception): # editable class template for all kinds of errors
 def error_response_callback(error):
     return jsonify(error.to_dict()), error.status_code
 
-@app.errorhandler(405) # handles all kinds of errors (executes with `raise ApiError({some data})`)
+@app.errorhandler(405)
 def error_response_callback(error):
     return jsonify(message='METHOD_NOT_ALLOWED'), 405
