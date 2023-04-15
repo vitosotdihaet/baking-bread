@@ -1,13 +1,13 @@
 // const withPlugins = require('next-compose-plugins');
 const withBundleAnalyzer = require('@next/bundle-analyzer');
+const withPWA = require('next-pwa');
+const runtimeCaching = require('next-pwa/cache');
 const {
     PHASE_DEVELOPMENT_SERVER,
     PHASE_PRODUCTION_BUILD,
 } = require('next/dist/shared/lib/constants');
 const buildWebpackConfig = require('./config/build/buildWebpackConfig');
 const buildSecurityHeaders = require('./config/next/buildSecurityHeaders');
-
-// @ts-check
 const { i18n } = require('./next-i18next.config.js');
 
 module.exports = async (phase, { defaultConfig }) => {
@@ -38,12 +38,19 @@ module.exports = async (phase, { defaultConfig }) => {
             buildActivity: true,
             buildActivityPosition: 'bottom-right',
         },
+        env: {
+            API_URL: 'https://eugenv.ru/api',
+        },
         pageExtensions: ['tsx', 'ts'],
         webpack: (config) => buildWebpackConfig(config),
     };
 
-    return withBundleAnalyzer({
-        enabled: process.env.ANALYZE === 'true',
-        openAnalyzer: false,
-    })(nextConfig);
+    if (process.env.ANALYZE) {
+        return withBundleAnalyzer({
+            enabled: process.env.ANALYZE === 'true',
+            openAnalyzer: false,
+        })(nextConfig);
+    }
+
+    return nextConfig;
 };
