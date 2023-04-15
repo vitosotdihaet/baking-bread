@@ -11,6 +11,9 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'plugin:i18next/recommended',
         'plugin:@next/next/recommended',
+        "@feature-sliced/eslint-config/rules/import-order",
+        "@feature-sliced/eslint-config/rules/public-api",
+        "@feature-sliced/eslint-config/rules/layers-slices",
     ],
     parser: '@typescript-eslint/parser',
     parserOptions: {
@@ -20,12 +23,24 @@ module.exports = {
         ecmaVersion: 'latest',
         sourceType: 'module',
     },
-    plugins: ['react', '@typescript-eslint', 'i18next', 'react-hooks'],
+    plugins: [
+        'react',
+        '@typescript-eslint', 
+        'i18next', 
+        'react-hooks'
+    ],
+    settings: {
+        'import/resolver': {
+            typescript: {
+                alwaysTryTypes: true,
+            },
+        },
+    },
     rules: {
         indent: ['error', 4],
         quotes: ['error', 'single'],
         semi: ['error', 'always'],
-        'max-len': ['error', { ignoreComments: true, code: 110 }],
+        'max-len': ['error', { ignoreComments: true, code: 130 }],
         'linebreak-style': 'off',
         'arrow-body-style': 'off',
         'wrap-iife': 'off',
@@ -48,8 +63,11 @@ module.exports = {
         'import/prefer-default-export': 'off',
         'import/extensions': 'off',
         'import/no-unresolved': 'off',
+        'import/no-internal-modules': 'off',
         '@typescript-eslint/ban-ts-comment': 'warn',
         '@typescript-eslint/no-var-requires': 'warn',
+        '@typescript-eslint/ban-types': 'off',
+        'boundaries/element-types': 'warn',
         'i18next/no-literal-string': [
             'error',
             {
