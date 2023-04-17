@@ -19,3 +19,5 @@ declare module '*.svg' {
 type DeepPartial<T> = {
     [K in keyof T]?: T[K] extends object ? DeepPartial<T[K]> : T[K];
 };
+
+type SvgIconType = React.FunctionComponent<React.SVGProps<SVGSVGElement>>
