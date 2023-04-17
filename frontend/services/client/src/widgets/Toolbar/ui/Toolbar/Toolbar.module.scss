@@ -1,0 +1,15 @@
+.Toolbar {
+    position: fixed;
+    z-index: var(--toolbar-index);
+    bottom: 0;
+    left: 0;
+    width: 100vw;
+    padding: 0.75rem 0;
+    background: var(--color-background);
+    box-shadow: 0 0.5rem 2rem rgb(0 0 0 / 40%);
+}
+
+.tool {
+    cursor: pointer;
+    text-decoration: none;
+}
