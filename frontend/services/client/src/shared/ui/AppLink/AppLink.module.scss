@@ -14,3 +14,35 @@
 .secondary {
     color: var(--color-secondary);
 }
+
+.accent {
+    color: var(--color-accent);
+}
+
+.soft {
+    color: var(--color-soft);
+}
+
+.disabled {
+    color: var(--color-gray-light);
+}
+
+.xs {
+    font: var(--font-xs);
+}
+
+.sm {
+    font: var(--font-sm);
+}
+
+.md {
+    font: var(--font-md);
+}
+
+.lg {
+    font: var(--font-lg);
+}
+
+.xl {
+    font: var(--font-xl);
+}

@@ -1,15 +1,15 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { Icon } from './Icon';
+import { Divider } from './Divider';
 
 export default {
-    title: 'shared/Icon',
-    component: Icon,
+    title: 'shared/Divider',
+    component: Divider,
     argTypes: {
         backgroundColor: { control: 'color' },
     },
-} as ComponentMeta<typeof Icon>;
+} as ComponentMeta<typeof Divider>;
 
-const Template: ComponentStory<typeof Icon> = (args) => <Icon {...args} />;
+const Template: ComponentStory<typeof Divider> = (args) => <Divider { ...args } />;
 
 export const Normal = Template.bind({});
 Normal.args = {

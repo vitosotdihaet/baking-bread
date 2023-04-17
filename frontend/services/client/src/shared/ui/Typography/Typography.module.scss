@@ -1,5 +1,7 @@
 .Typography {
     display: inline-block;
+    text-decoration: inherit;
+    text-decoration-color: inherit;
 }
 
 .h1 {
@@ -31,12 +33,13 @@
 }
 
 .p,
-.div {
+.span {
     font: var(--font-sm);
 }
 
 .div {
     display: block;
+    font: var(--font-md);
 }
 
 .subtitle {
@@ -74,4 +77,48 @@
 
 .sans {
     font-family: var(--font-family-sans);
+}
+
+.primary {
+    color: var(--color-primary);
+}
+
+.secondary {
+    color: var(--color-secondary);
+}
+
+.accent {
+    color: var(--color-accent);
+}
+
+.soft {
+    color: var(--color-soft);
+}
+
+.disabled {
+    color: var(--color-disabled);
+}
+
+.xs {
+    font-size: var(--font-size-xs);
+}
+
+.sm {
+    font-size: var(--font-size-sm);
+}
+
+.md {
+    font-size: var(--font-size-md);
+}
+
+.lg {
+    font-size: var(--font-size-lg);
+}
+
+.xl {
+    font-size: var(--font-size-xl);
+}
+
+.fullWidth {
+    width: 100%;
 }

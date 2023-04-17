@@ -7,7 +7,7 @@ import { Additional, classNames } from 'shared/lib/classNames/classNames';
 import cls from './Loader.module.scss';
 
 type LoaderSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-type LoaderColor = 'primary' | 'secondary' | 'accent' | 'highlight' | 'disabled';
+type LoaderColor = 'primary' | 'secondary' | 'accent' | 'soft' | 'disabled';
 
 interface LoaderProps extends HTMLAttributes<HTMLDivElement> {
     className?: string;

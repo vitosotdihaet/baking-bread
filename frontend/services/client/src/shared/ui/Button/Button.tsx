@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import {
     ReactNode, memo,
 } from 'react';
@@ -6,30 +7,15 @@ import {
     Mods,
     classNames,
 } from 'shared/lib/classNames/classNames';
+import { PolymorphicComponentPropWithRef } from 'shared/types/ui';
 import { Loader } from '../Loader/Loader';
 import cls from './Button.module.scss';
 
 type ButtonVariant = 'primary' | 'secondary' | 'outlined' | 'accent' |'clear';
 type ButtonRadius = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+type ButtonPadding = 'smPadding' | 'mdPadding';
 type ButtonSize = 'small' | 'medium' | 'large';
 type ButtonContentAlign = 'left' | 'center' | 'right';
-
-type PolymorphicRef<C extends React.ElementType> = React.ComponentPropsWithRef<C>['ref'];
-
-type AsProp<C extends React.ElementType> = { as?: C; };
-
-type PropsToOmit<C extends React.ElementType, P> = keyof (AsProp<C> & P);
-
-type PolymorphicComponentProp<
-    C extends React.ElementType,
-    Props = {}
-> = React.PropsWithChildren<Props & AsProp<C>> &
-Omit<React.ComponentPropsWithoutRef<C>, PropsToOmit<C, Props>>;
-
-type PolymorphicComponentPropWithRef<
-    C extends React.ElementType,
-    Props = {}
-> = PolymorphicComponentProp<C, Props> & { ref?: PolymorphicRef<C> };
 
 type ButtonProps<C extends React.ElementType> = PolymorphicComponentPropWithRef<
     C,
@@ -44,9 +30,13 @@ type ButtonProps<C extends React.ElementType> = PolymorphicComponentPropWithRef<
         fullWidth?: boolean;
         uppercase?: boolean;
         radius?: ButtonRadius;
+        padding?: ButtonPadding;
         size?: ButtonSize;
         loading?: boolean;
         alignContent?: ButtonContentAlign;
+        noIndent?: boolean;
+        href?: string;
+        link?: boolean;
     }
 >;
 type ButtonComponent = <C extends React.ElementType = 'button'>(
@@ -65,10 +55,13 @@ export const Button: ButtonComponent = memo(<C extends React.ElementType = 'butt
         fullWidth = true,
         uppercase = false,
         radius = 'xl',
+        padding = 'mdPadding',
         size = 'medium',
         alignContent = 'left',
         loading = false,
-        active = false,
+        noIndent = false,
+        href,
+        link,
         ...otherProps
     } = props;
     const Component = as || 'button';
@@ -80,13 +73,32 @@ export const Button: ButtonComponent = memo(<C extends React.ElementType = 'butt
         cls[size],
         cls[radius],
         cls[alignContent],
+        cls[padding],
     ];
+
     const mods: Mods = {
         [cls.disabled]: isDisabled,
         [cls.fullWidth]: fullWidth,
         [cls.uppercase]: uppercase,
-        [cls.active]: active,
+        [cls.link]: href,
+        [cls.noIndent]: noIndent,
     };
+
+    if (as === 'a' && href) {
+        return (
+            <Link
+                href={href}
+                className={classNames(cls.Button, mods, additional)}
+                disabled={isDisabled}
+                {...otherProps}
+            >
+                {before && <span className={cls.before}>{before}</span>}
+                {loading && <Loader className={cls.loader} size='xs' color='disabled' />}
+                {children}
+                {after && <span className={cls.after}>{after}</span>}
+            </Link>
+        );
+    }
 
     return (
         <Component

@@ -22,6 +22,7 @@ a.Button {
 
 .primary {
     background: var(--color-soft);
+    color: var(--color-primary);
 }
 
 .secondary {
@@ -31,12 +32,12 @@ a.Button {
 
 .outlined {
     border: 2px solid var(--color-primary);
+    color: var(--color-primary);
 }
 
 .accent {
     background: var(--color-accent);
     color: var(--color-inverted);
-    font-family: var(--font-family-sans);
 }
 
 .disabled {
@@ -63,6 +64,8 @@ a.Button {
 }
 
 .before {
+    color: var(--color-gray);
+    mix-blend-mode: luminosity;
     margin-right: 0.4rem;
 }
 
@@ -79,17 +82,15 @@ a.Button {
 }
 
 .small {
-    padding: 0.2rem 1rem;
-    font-size: large;
+    font: var(--font-xs);
 }
 
 .medium {
-    padding: 0.5rem 1.5rem;
-    font-size: medium;
+    font: var(--font-md);
 }
 
 .large {
-    font-size: large;
+    font: var(--font-lg);
 }
 
 .xs {
@@ -124,6 +125,19 @@ a.Button {
     justify-content: end;
 }
 
-.active {
-    font-weight: bold;
+.link {
+    color: none;
+}
+
+.noIndent {
+    padding: 0;
+    margin: 0;
+}
+
+.smPadding {
+    padding: 0.2rem 1rem;
+}
+
+.mdPadding {
+    padding: 0.5rem 1.5rem;
 }
