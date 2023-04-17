@@ -7,7 +7,7 @@ import {
     ThunkAction,
 } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
-import { $api } from 'shared/api/api';
+import { rtkApi } from 'shared/api/rtkApi';
 import { createReducerManager } from './reducerManager';
 import { StateSchema, ThunkExtraArg } from './StateSchema';
 
@@ -17,23 +17,16 @@ export const createReduxStore = (
 ) => {
     const rootReducers: ReducersMapObject<StateSchema> = {
         ...asyncReducers,
+        [rtkApi.reducerPath]: rtkApi.reducer,
     };
 
     const reducerManager = createReducerManager(rootReducers);
-
-    const extraArg: ThunkExtraArg = {
-        api: $api,
-    };
 
     const store = configureStore({
         reducer: reducerManager.reduce as Reducer<CombinedState<StateSchema>>,
         devTools: process.env.NODE_ENV === 'development',
         preloadedState: initialState,
-        middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-            thunk: {
-                extraArgument: extraArg,
-            },
-        }),
+        middleware: (getDefaultMiddleware) => getDefaultMiddleware({}).concat(rtkApi.middleware),
     });
 
     // @ts-ignore

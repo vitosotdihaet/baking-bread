@@ -6,10 +6,12 @@ import {
     ReducersMapObject,
 } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
+import { GoodTypeScrollerSchema, goodTypeScrollerSlice } from 'features/goodTypeScroller';
+import { rtkApi } from 'shared/api/rtkApi';
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface StateSchema {
-
+    [rtkApi.reducerPath]: ReturnType<typeof rtkApi.reducer>;
+    [goodTypeScrollerSlice.name]?: GoodTypeScrollerSchema;
 }
 
 export type StateSchemaKey = keyof StateSchema;
