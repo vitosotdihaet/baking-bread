@@ -1,0 +1,30 @@
+:root {
+    // Family
+    --font-family-main: 'GT America';
+    --font-family-sans: 'Pangram Sans';
+
+    // Font Sizes
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 2rem;
+
+    // Font Lines
+    --font-line-xs: 120%;
+    --font-line-sm: 120%;
+    --font-line-md: 150%;
+    --font-line-lg: 150%;
+    --font-line-xl: 150%;
+
+    // Font
+    --font-xs: var(--font-size-xs) / var(--font-line-xs) var(--font-family-main);
+    --font-sm: var(--font-size-sm) / var(--font-line-sm) var(--font-family-main);
+    --font-md: var(--font-size-md) / var(--font-line-md) var(--font-family-main);
+    --font-lg: var(--font-size-lg) / var(--font-line-lg) var(--font-family-main);
+    --font-xl: var(--font-size-xl) / var(--font-line-xl) var(--font-family-main);
+
+    // Indexes
+    --navbar-index: 2;
+    --toolbar-index: 2;
+}

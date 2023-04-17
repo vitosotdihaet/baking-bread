@@ -1,66 +1,27 @@
 @import './reset.scss';
+@import './variables/global.scss';
+@import './variables/theme.scss';
 
 @font-face {
     font-family: 'GT America';
-    src: url('../../shared/assets/fonts/gt-america.otf');
+    src: url('../../../public/fonts/gt-america.otf');
 }
 
 @font-face {
     font-family: 'GT America';
     font-weight: bold;
-    src: url('../../shared/assets/fonts/gt-america-bold.otf');
+    src: url('../../../public/fonts/gt-america-bold.otf');
 }
 
 @font-face {
     font-family: 'Pangram Sans';
-    src: url('../../shared/assets/fonts/pangram-sans.ttf');
-}
-
-
-.theme {
-    --color-primary: #000;
-    --color-secondary: #555;
-    --color-inverted: #fff;
-    --color-soft: #feefaa;
-    --color-accent: #2b4385;
-    --color-gray-light: #eee;
-    --color-disabled: #999;
-}
-
-:root {
-    --font-family-main: 'GT America';
-    --font-family-sans: 'Pangram Sans';
-
-    --font-size-xs: 0.75rem;
-    --font-size-sm: 0.875rem;
-    --font-size-md: 1rem;
-    --font-size-lg: 1.25rem;
-    --font-size-xl: 2rem;
-
-    --font-line-xs: 120%;
-    --font-line-sm: 120%;
-    --font-line-md: 160%;
-    --font-line-lg: 180%;
-    --font-line-xl: 200%;
-
-    --font-xs: var(--font-size-xs) / var(--font-line-xs) var(--font-family-main);
-    --font-sm: var(--font-size-sm) / var(--font-line-sm) var(--font-family-main);
-    --font-md: var(--font-size-md) / var(--font-line-md) var(--font-family-main);
-    --font-lg: var(--font-size-lg) / var(--font-line-lg) var(--font-family-main);
-    --font-xl: var(--font-size-xl) / var(--font-line-xl) var(--font-family-main);
-
-    --color-primary: #000;
-    --color-secondary: #555;
-    --color-inverted: #fff;
-    --color-soft: #feefaa;
-    --color-accent: #2b4385;
-    --color-gray: #888;
-    --color-gray-light: #eee;
-    --color-disabled: #999;
-
-    --navbar-index: 2;
+    src: url('../../../public/fonts/pangram-sans.ttf');
 }
 
 body {
     font: var(--font-md);
+}
+
+* {
+    scroll-behavior: smooth !important;
 }
