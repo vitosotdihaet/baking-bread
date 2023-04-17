@@ -41,6 +41,9 @@ module.exports = async (phase, { defaultConfig }) => {
         env: {
             API_URL: 'https://eugenv.ru/api',
         },
+        images: {
+            domains: ['eugenv.ru'],
+        },
         pageExtensions: ['tsx', 'ts'],
         webpack: (config) => buildWebpackConfig(config),
     };
