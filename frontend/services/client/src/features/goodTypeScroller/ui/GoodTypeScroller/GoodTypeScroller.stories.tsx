@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import { GoodTypeScroller } from './GoodTypeScroller';
 
 export default {
-    title: 'shared/GoodTypeScroller',
+    title: 'features/GoodTypeScroller',
     component: GoodTypeScroller,
 } as ComponentMeta<typeof GoodTypeScroller>;
 
