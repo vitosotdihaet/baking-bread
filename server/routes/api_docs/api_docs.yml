@@ -1,18 +1,24 @@
-swagger: '2.0'
-
 ################################################################################
 #                              API Information                                 #
 ################################################################################
 info:
   title: 'Baking Bread API DOCS'
   description: |
-      # GOODS CRUD API
-
       ## FOR USAGE 
 
       Just scroll down to the interactive API requests!
 
       If any not really understandable `errors` occur, contact ***@Eugene Toropkin***
+
+      -----------------------------------------------
+        
+      📝 **Note:** Log in as an ***administrator*** before making requests marked with a padlock 🔒
+
+      Before login, sign up as an ***administrator*** in case you dont have admin username and password.
+
+      Check the **Authenticaton API** requests for those purposes.
+      
+      -----------------------------------------------
 
       ## REQUEST HTTP METHODS 
 
@@ -24,214 +30,527 @@ info:
 
       - To `delete` good types or goods use ***DELETE*** method
 
-      ### Note!
-
-      ```
-
-
-      In the next examples we will use base URL  "baking-bread.com".
-
-      Due testing we likely will use ngrok host URL.
-
-
-      ```
-
-      ## GOOD TYPES CRUD 
-
-      ### Creating a good type
-
-      To create a good type we have to send request to `baking-bread.com/api/good_types` using ***POST*** method.
-
-      In the body of the request server expects `JSON` with the following *required* fields: 
-
-      ```
-      {
-          "name": "good_type_name",
-          "description": "good_type_description",
-          "order": 1
-      }
-      ```
-
-      ### Getting good types
-
-      To get all good types we have to send request to `baking-bread.com/api/good_types` using ***GET*** method.
-
-      Available query params for getting good types: 
-
-      - In the `select` parameter we can set desired fields name to get, separated by coma: 
-
-          - Valid fields to select in good types: 
-
-              - `id` - ID of a good type in the database, type  **integer**
-
-              - `name` - name of a good type, type  **string**
-
-              - `description` - description of a good type, type  **string**
-
-              - `goodsCount` - count of goods related to good type, type  **integer**
-
-              - `order` - order of a good type as its place in the menu, type  **integer**
-
-          
-
-      Example:  `baking-bread.com/api/good_types?select=name,id,goodsCount,order`
-
-          
-
-      - In the `expand` parameter we can set *required* value `goods` to get list of goods related to 
-      good types we get in the response 
-          
-          
-
-      Example:  `baking-bread.com/api/good_types?expand=goods`
-          
-
-      Additionally we can use *expand* value parameter we already know as `select` for the expand value `goods` :
-
-      - In the `select` parameter we can set desired fields name to get, separated by coma: 
-
-          - Valid fields to select in good types: 
-
-              - `id` - ID of a good in the database, type  **integer**
-
-              - `name` - name of a good type, type  **string**
-
-              - `description` - description of a good type, type  **string**
-
-              - ***Other fields coming soon...***
-
-
-      Example:  `baking-bread.com/api/good_types?expand=goods.select=name,id`
-
-      To get desired good type by ID we have to send request to `baking-bread.com/api/good_types/<id>` using ***GET*** method, where `<id>` is the ID of a good type we want to get.
-
-
-      Example:  `baking-bread.com/api/good_types/1`
-
-      ### Updating a good type
-
-      To update the good type we have to send request to `baking-bread.com/api/good_types` using ***PATCH*** method.
-
-      In the body of request server expects `JSON` with the following *optional* fields:
-
-      ```python
-      {
-          "name": "UPDATED_good_type_name",
-          "description": "UPDATED_good_type_description",
-          "order": 2
-      }
-      ```
-
-
-      ### Note! 
-
-      ```
-
-      Other detailed goods CRUD API DOCS coming soon!
-
-      ```
-
       -----------------------------------------------
-
-
-      # TRY OUT API BY YOURSELF!)
+  
   version: 'beta 0.0.1'
 
-################################################################################
-#                            Host, Content Types                               #
-################################################################################
-# The host (name or ip) serving the API
-host: cff4-95-29-57-226.ngrok-free.app/
+  termsOfService: https://github.com/vitosotdihaet/baking-bread/blob/main/CODE_OF_CONDUCT.md
 
-# Format of bodies a client can send (Content-Type)
-consumes:
-  - application/json
-# Format of the responses to the client (Accepts)
-produces:
-  - application/json
+  contact:
+    url: https://vk.com/akumii
+    email: toropkibn@gmail.com
+
+  license:
+    name: Nginx 1.18.0
+    url: https://nginx.org/LICENSE
+
+externalDocs:
+  description: Find out more about Baking Bread!
+  url: https://github.com/vitosotdihaet/baking-bread
+
+tags:
+  - name: Authenticaton API
+    description: Do everything with authentication :)
+  - name: Good types API
+    description: Do everything with our good types :)
+  - name: Goods API
+    description: Do everything with our goods :)
+
+################################################################################
+#                            Hosts, Servers, cookies auth                      #
+################################################################################
+
+servers: [
+  {
+    "url": "https://eugenv.ru/",
+    "description": "Staging server"
+  },
+  {
+    "url": "http://127.0.0.1:5000/",
+    "description": "Development server"
+  },
+  {
+    "url": "No production server is present...",
+  }
+]
 
 ################################################################################
 #                                    Paths                                     #
 ################################################################################
 paths:
-  '/api/good_types':
+  /api/admin/signup:
     post:
+      operationId: admin_signup
+      summary: Signup with admin rights
+      tags:
+        - Authenticaton API
+      description: |
+        ## Sign up with **admin rights** using this ***POST*** request!
+
+        This `POST` request registers admins.
+
+        -----------------------------------------------
+        
+        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
+
+        Due testing we likely will use *eugenv.ru* server base URL.
+        
+        -----------------------------------------------
+
+        To sign up as an admin we have to send request to *baking-bread.com/***api/admin/signup** with ***POST*** method
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+
+      requestBody:
+        required: true
+        description: Signed up in using this `JSON`
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginAndSignup'
+
+      responses:
+        201:
+          description: |
+            Response: Signed up as an **admin** successfully
+
+  /api/admin/login:
+    post:
+      operationId: admin_login
+      summary: Login with admin rights
+      tags:
+        - Authenticaton API
+      description: |
+        ## Login with **admin rights** using this ***POST*** request!
+
+        This `POST` request logs in admins.
+
+        -----------------------------------------------
+        
+        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
+
+        Due testing we likely will use *eugenv.ru* server base URL.
+        
+        -----------------------------------------------
+        
+        📝 **Note 2:** Log in as an ***administrator*** before making requests marked with a padlock
+
+        Before login sign up as an ***administrator***
+        
+        -----------------------------------------------
+
+        To log in as an admin we have to send request to *baking-bread.com/***api/admin/login** with ***POST*** method
+
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+      requestBody:
+        required: true
+        description: Logged in using this `JSON`
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginAndSignup'
+
+      responses:
+        201:
+          description: |
+            Response: Logged in as an **admin** successfully
+
+  /api/user/signup:
+    post:
+      operationId: signup
+      summary: Signup without admin rights
+      tags:
+        - Authenticaton API
+      description: |
+        ## Sign up without **admin rights** using this ***POST*** request!
+
+        This `POST` request registers users.
+
+        -----------------------------------------------
+        
+        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
+
+        Due testing we likely will use *eugenv.ru* server base URL.
+        
+        -----------------------------------------------
+
+        To sign up as an user we have to send request to *baking-bread.com/***api/user/signup** with ***POST*** method
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+
+      requestBody:
+        required: true
+        description: Signed up in using this `JSON`
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginAndSignup'
+
+      responses:
+        201:
+          description: |
+            Response: Signed up as an **user** successfully
+
+  /api/user/login:
+    post:
+      operationId: login
+      summary: Login without admin rights
+      tags:
+        - Authenticaton API
+      description: |
+        ## Login without **admin rights** using this ***POST*** request!
+
+        This `POST` request logs in users.
+
+        -----------------------------------------------
+        
+        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
+
+        Due testing we likely will use *eugenv.ru* server base URL.
+        
+        -----------------------------------------------
+
+        To log in as an user we have to send request to *baking-bread.com/***api/user/login** with ***POST*** method
+
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+      requestBody:
+        required: true
+        description: Logged in using this `JSON`
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginAndSignup'
+
+      responses:
+        201:
+          description: |
+            Response: Logged in as an **user** successfully
+
+  /api/logout:
+    post:
+      security:
+        - cookieAuth: []
+      operationId: logout
+      summary: Logout
+      tags:
+        - Authenticaton API
+      description: |
+        ## Logout using this ***POST*** request!
+
+        This `POST` request logs out users.
+
+        -----------------------------------------------
+        
+        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
+
+        Due testing we likely will use *eugenv.ru* server base URL.
+        
+        -----------------------------------------------
+
+        To log out we have to send request to *baking-bread.com/***api/logout** with ***POST*** method
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+
+      responses:
+        200:
+          description: |
+            Response: Logged out successfully
+
+  /api/refresh:
+    post:
+      security:
+        - cookieAuth: []
+      operationId: refresh
+      summary: Refresh the access-token
+      tags:
+        - Authenticaton API
+      description: |
+        ## Refresh the access-token using this ***POST*** request!
+
+        This `POST` refreshes access-tokens.
+
+        -----------------------------------------------
+        
+        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
+
+        Due testing we likely will use *eugenv.ru* server base URL.
+        
+        -----------------------------------------------
+
+        To refresh the access-token we have to send request to *baking-bread.com/***api/refresh** with ***POST*** method
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+
+      responses:
+        200:
+          description: |
+            Response: `Logged out successfully`
+
+  /api/user/access:
+    get:
+      security:
+        - cookieAuth: []
+      operationId: user_access
+      summary: Checks if the user logged in and has access to this endpoint
+      tags:
+        - Authenticaton API
+      description: |
+        ## Check the user access using this ***GET*** request!
+
+        This `GET` checks the user access.
+
+        -----------------------------------------------
+        
+        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
+
+        Due testing we likely will use *eugenv.ru* server base URL.
+        
+        -----------------------------------------------
+
+        To check the user access we have to send request to *baking-bread.com/***api/user/access** with ***GET*** method
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+
+      responses:
+        200:
+          description: |
+            Response: User has **logged in** and has **access** to this endpoint
+
+  /api/admin/access:
+    get:
+      security:
+        - cookieAuth: []
+      operationId: admin_access
+      summary: Checks if the user logged in and has admin rights
+      tags:
+        - Authenticaton API
+      description: |
+        ## Check the user's admin rights using this ***GET*** request!
+
+        This `GET` checks the user's admin rights.
+
+        -----------------------------------------------
+        
+        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
+
+        Due testing we likely will use *eugenv.ru* server base URL.
+        
+        -----------------------------------------------
+
+        To check the user's admin rights we have to send request to *baking-bread.com/***api/admin/access** with ***GET*** method
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+
+      responses:
+        200:
+          description: |
+            Response: User has **logged in** and has **admin rights** to enter this endpoint
+
+  /api/user/delete_account:
+    delete:
+      security:
+        - cookieAuth: []
+      operationId: delete_account
+      summary: Deletes an **user** account
+      tags:
+        - Authenticaton API
+      description: |
+        ## Deletes an **user** account using this ***POST*** request!
+
+        This `POST` deletes an **user** account.
+
+        -----------------------------------------------
+        
+        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
+
+        Due testing we likely will use *eugenv.ru* server base URL.
+        
+        -----------------------------------------------
+
+        To delete an account we have to send request to *baking-bread.com/***api/user/delete_account** with ***DELETE*** method
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+
+      responses:
+        200:
+          description: |
+            Response: **Deleted** the account successfully
+
+  /api/admin/delete_account:
+    delete:
+      security:
+        - cookieAuth: []
+      operationId: delete_admin
+      summary: Deletes an **admin** account
+      tags:
+        - Authenticaton API
+      description: |
+        ## Deletes an **admin** account using this ***POST*** request!
+
+        This `POST` deletes an **admin** account.
+
+        -----------------------------------------------
+        
+        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
+
+        Due testing we likely will use *eugenv.ru* server base URL.
+        
+        -----------------------------------------------
+
+        To delete an account we have to send request to *baking-bread.com/***api/admin/delete_account** with ***DELETE*** method
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+
+      responses:
+        200:
+          description: |
+            Response: **Deleted** the account successfully
+
+
+  /api/good_types:
+    post:
+      security:
+        - cookieAuth: []
       operationId: create_good_type
+      summary: Create a good type
       tags:
         - Good types API
-      summary: Create good type
       description: |
+        ## Create a good type using this ***POST*** request!
+
+        This `POST` request creates a new good type.
+
+        -----------------------------------------------
+        
+        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
+
+        Due testing we likely will use *eugenv.ru* server base URL.
+        
+        -----------------------------------------------
+
+
+        To create a good type we have to send request to *baking-bread.com/***api/good_types** with ***POST*** method
+
+
         **The below table defines the HTTP Status codes that this API may return**
         
         | Status Code      | Description | Reason                             |
         | ---------------- | ------------| -----------------------------------|
         | 201              | CREATED     | If a good type is created successfuly.   |
-        | 400              | BAD REQUEST | If JSON in the body of the request failed validation (check the response message for more info)|
-        | 405              | METHOD NOT ALLOWED| If endpoint doesn't support given request method|
-        | 409              | CONFLICT | If try to add existing good type: GOOD_TYPE_ALREADY_EXISTS|
-      produces:
-      - application/json
-      consumes:
-        - application/json
+        | 400              | BAD REQUEST | If JSON in the body of the request failed validation. **(check the response messages for more info)**|
+        | 405              | METHOD NOT ALLOWED| If endpoint doesn't support given request method.|
+        | 409              | CONFLICT | If you try to add existing good type.|
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
-      parameters:
-        - in: body
-          name: body
-          description: Server expects JSON with the following required fields
-          required: true
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                maxLength: 20
-                minLength: 1
-                description: name of a good type
-                required: true
-              description:
-                type: string
-                maxLength: 200
-                minLength: 1
-                description: description of a good type
-                required: true
-              order:
-                type: integer
-                description: order of a good type placed in the menu
-                required: true
+      requestBody:
+        required: true
+        description: Created good type object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoodTypeForPost'
       responses:
         201:
-          description: Created a good type
+          description: |
+            Response: `JSON` of the good type you *successfully* created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoodTypeForPost'
         409:
-          description: Good type we try to add already exists
+          description: |
+            Response: `{"message": "GOOD_TYPE_ALREADY_EXISTS"}`
         400:
-          description: JSON in the body of the request failed validation (check the response message for more info)
+          description: |
+            `JSON` you sent in the body of a request ***failed*** validation,
+            so you get in response: `JSON` of invalid fileds.
+
+
+            **Example:**
+
+            You send:
+
+            ```
+            {
+              "name": "veeeeeryyy loooooooong string",
+              "description": 243,
+              "orderrrrr": 0
+            }
+            ```
+
+
+            You get:
+
+            ```
+            {
+              "message": {
+                "name": "INVALID_LENGTH",
+                "description": "INVALID_TYPE",
+                "order": "MISSING_DATA",
+                "orderrrrr": "UNKNOWN_FIELD"
+              }
+            }
+            ```
         405:
-          description: Request method is not allowed for this endpoint
+          description: |
+            Response: `{"message": "METHOD_NOT_ALLOWED"}`
 
     get:
+      summary: Get all good types
       tags:
         - Good types API
       operationId: get_good_types
-      summary: Get good types
-      description: GET request for getting all of the good types
-      produces:
-      - application/json
+      description: |
+        ## Get all good types using this ***GET*** request!
+
+        ---
+
+        📝 **Note:** In the examples below, we assume that the base URL is `baking-bread.com`.
+
+        However, during testing, we may use a different server base URL, such as `eugenv.ru`.
+
+        ---
+
+        To get all good types we have to send a request to *baking-bread.com/***api/good_types** with the GET method.
+
+        **The table below defines the HTTP status codes that this API may return:**
+
+        | Status Code | Description | Reason |
+        |-------------|-------------|--------|
+        | 200         | OK          | The request for all good types was successful. |
+        | 400         | BAD REQUEST | The query parameters provided were invalid or used incorrectly. Check the response messages for more information. |
+        | 405         | METHOD NOT ALLOWED | The HTTP method used is not supported by this endpoint. |
+        | 409         | CONFLICT    | No good types have been added yet. |
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
       parameters:
       - in: query
         name: select
+        required: false
         description: select desired fields of good types you want to get, separated by coma (e.g. 'name,id')
         type: string
       - in: query
         name: expand
+        required: false
         description: set value to 'goods' or e.g. 'goods.select=name' (already known param, but applies to goods in the list) to get list of all related goods in each good type
         type: string
       - in: query
         name: sort
+        required: false
         description: set value to 'asc' or 'desc' to sort in the ascending or descending order (if sort is not set, 'sort=asc' is by default) 
         type: string
       responses:
@@ -244,7 +563,27 @@ paths:
         405:
           description: Request method is not allowed for this endpoint
 
-  '/api/good_types/{id}':
+    delete:
+      security:
+        - cookieAuth: []
+      operationId: delete_good_types
+      tags:
+        - Good types API
+      summary: Delete all good types
+      description: DELETE request for deleting good types
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+      responses:
+        200:
+          description: |
+            Response: `JSON` of the good types you *successfully* deleted
+        409:
+          description: No good types have been added.
+        405:
+          description: Request method is not allowed for this endpoint.
+
+  /api/good_types/{id}:
     get:
       tags:
         - Good types API
@@ -252,7 +591,7 @@ paths:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
       operationId: get_good_type_by_id
-      summary: Get good type by its ID
+      summary: Get a good type
       description: GET request for getting good type by its ID
       produces:
       - application/json
@@ -281,15 +620,13 @@ paths:
           description: Request method is not allowed for this endpoint
     
     patch:
+      security:
+        - cookieAuth: []
       operationId: update_good_type_by_id
       tags:
         - Good types API
-      summary: Update good type
+      summary: Update a good type
       description: PATCH request for updating good type by its ID
-      produces:
-      - application/json
-      consumes:
-        - application/json
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
@@ -299,29 +636,21 @@ paths:
           description: Requesting good type by its ID
           required: true
           type: integer
-        - in: body
-          name: body
-          description: Server expects JSON with the following optional fields
-          required: true
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                maxLength: 20
-                minLength: 1
-                description: name of a good type
-              description:
-                type: string
-                maxLength: 200
-                minLength: 1
-                description: description of a good type
-              order:
-                type: integer
-                description: order of a good type placed in the menu
+      requestBody:
+        required: true
+        description: Updated good type object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoodTypeForPatch'
       responses:
         200:
-          description: Updated a good type
+          description: |
+            Response: `JSON` of the good type you *successfully* updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoodTypeForPatch'
         400:
           description: JSON in the body of the request failed validation (check the response message for more info)
         405:
@@ -330,10 +659,12 @@ paths:
           description: No good types have been added or good type doesnt exist
 
     delete:
+      security:
+        - cookieAuth: []
       operationId: delete_good_type_by_id
       tags:
         - Good types API
-      summary: Delete good type
+      summary: Delete a good type
       description: DELETE request for deleting good type by its ID
       produces:
       - application/json
@@ -350,23 +681,48 @@ paths:
           type: integer
       responses:
         200:
-          description: Deleted a good type
+          description: |
+            Response: `JSON` of the good type you *successfully* deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoodTypeForPost'
         409:
           description: No good types have been added or good type doesnt exist
         405:
           description: Request method is not allowed for this endpoint
 
-  '/api/good_types/{id}/goods':
+  /api/good_types/{id}/goods:
     post:
+      security:
+        - cookieAuth: []
       operationId: create_good
       tags:
         - Goods API
       summary: Create good related to good type with desired ID
-      description: POST request for creating goods
-      produces:
-      - application/json
-      consumes:
-        - application/json
+      description: |
+        ## Create a Good related to a Good Type
+
+        This `POST` request creates a new good related to the good type identified by the given ID.
+
+        -----------------------------------------------
+
+        📝 **Note:** In the examples below, we assume that the base URL is `baking-bread.com`. 
+
+        However, during testing, we may use a different server base URL, such as `eugenv.ru`.
+
+        -----------------------------------------------
+
+        To create a new good, send a `POST` request to *baking-bread.com/***api/good_types/{id}/goods**. The request body must contain a JSON object with the details of the new good.
+
+        The following table lists the HTTP status codes that this API may return:
+
+        | Status Code | Description | Reason |
+        | --- | --- | --- |
+        | 200 | OK | The good was created successfully. The response body contains the details of the new good. |
+        | 400 | Bad Request | The JSON in the request body failed validation. Check the response message for more information. |
+        | 405 | Method Not Allowed | The HTTP method used is not supported by this endpoint. |
+        | 409 | Conflict | The good you are trying to add already exists. |
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
@@ -376,57 +732,21 @@ paths:
           description: Requesting good type by its ID
           required: true
           type: integer
-        - in: body
-          name: body
-          description: Server expects JSON with the following required fields, except for 'previousPrice', which is optional
-          required: true
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                maxLength: 20
-                minLength: 1
-                description: name of a good
-                required: true
-              description:
-                type: string
-                maxLength: 200
-                minLength: 1
-                description: description of a good
-                required: true
-              image:
-                type: string
-                maxLength: 200
-                minLength: 1
-                description: image of a good
-                required: true
-              available:
-                type: boolean
-                description: availability of a good
-                required: true
-              previousPrice:
-                type: integer
-                description: previous price of a good
-              price:
-                type: integer
-                description: price of a good
-                required: true
-              weight:
-                type: integer
-                description: weight of a good
-                required: true
-              lifetime:
-                type: integer
-                description: weight of a good
-                required: true
-              quantity:
-                type: integer
-                description: weight of a good
-                required: true
+      requestBody:
+        required: true
+        description: Created good object
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GoodForPost'
       responses:
-        201:
-          description: Created a good
+        200:
+          description: |
+            Response: `JSON` of the good you *successfully* created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoodForPost'
         409:
           description: Good we try to add already exists or good type doesnt exist
         400:
@@ -434,12 +754,12 @@ paths:
         405:
           description: Request method is not allowed for this endpoint
 
-  '/api/good_types/goods':
+  /api/good_types/goods:
     get:
       tags:
         - Goods API
       operationId: get_goods
-      summary: Get goods
+      summary: Get all goods
       description: GET request for getting all of the goods
       produces:
       - application/json
@@ -461,7 +781,27 @@ paths:
         405:
           description: Request method is not allowed for this endpoint
 
-  '/api/good_types/goods/{id}':
+    delete:
+      security:
+        - cookieAuth: []
+      operationId: delete_all_goods
+      tags:
+        - Goods API
+      summary: Delete all goods
+      description: DELETE request for deleting all goods
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+      responses:
+        200:
+          description: |
+            Response: `JSON` of the goods you *successfully* deleted
+        409:
+          description: No goods have been added.
+        405:
+          description: Request method is not allowed for this endpoint.
+
+  /api/good_types/goods/{id}:
     get:
       tags:
         - Goods API
@@ -469,7 +809,7 @@ paths:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
       operationId: get_good_by_id
-      summary: Get good by its ID
+      summary: Get a good
       description: GET request for getting good by its ID
       produces:
       - application/json
@@ -494,10 +834,12 @@ paths:
           description: Request method is not allowed for this endpoint
     
     patch:
+      security:
+        - cookieAuth: []
       operationId: update_good_by_id
       tags:
         - Goods API
-      summary: Update good
+      summary: Update a good
       description: PATCH request for updating good by its ID
       produces:
       - application/json
@@ -512,49 +854,21 @@ paths:
           description: Requesting good type by its ID
           required: true
           type: integer
-        - in: body
-          name: body
-          description: Server expects JSON with the following optional fields
-          required: true
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                maxLength: 20
-                minLength: 1
-                description: name of a good
-              description:
-                type: string
-                maxLength: 200
-                minLength: 1
-                description: description of a good
-              image:
-                type: string
-                maxLength: 200
-                minLength: 1
-                description: image of a good
-              available:
-                type: boolean
-                description: availability of a good
-              previousPrice:
-                type: integer
-                description: previous price of a good
-              price:
-                type: integer
-                description: price of a good
-              weight:
-                type: integer
-                description: weight of a good
-              lifetime:
-                type: integer
-                description: weight of a good
-              quantity:
-                type: integer
-                description: weight of a good
+      requestBody:
+        required: true
+        description: Updated good object
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GoodForPatch'
       responses:
         200:
-          description: Updated a good
+          description: |
+            Response: `JSON` of the good you *successfully* updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoodForPatch'
         400:
           description: JSON in the body of the request failed validation (check the response message for more info)
         405:
@@ -563,10 +877,12 @@ paths:
           description: No goods have been added or good doesnt exist
 
     delete:
+      security:
+        - cookieAuth: []
       operationId: delete_good_by_id
       tags:
         - Goods API
-      summary: Delete good
+      summary: Delete a good
       description: DELETE request for deleting good by its ID
       produces:
       - application/json
@@ -583,8 +899,184 @@ paths:
           type: integer
       responses:
         200:
-          description: Deleted a good
+          description: |
+            Response: `JSON` of the good you *successfully* deleted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoodForPost'
         409:
           description: No goods have been added or good doesnt exist
         405:
           description: Request method is not allowed for this endpoint
+
+
+components:
+  schemas:
+    GoodTypeForPost:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 20
+          minLength: 1
+          description: name of a good type
+          required: true
+          example: 'good type name'
+        description:
+          type: string
+          maxLength: 200
+          minLength: 1
+          description: description of a good type
+          required: true
+          example: 'good type description'
+        order:
+          type: integer
+          description: order of a good type placed in the menu
+          required: true
+          example: 0
+
+    GoodTypeForPatch:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 20
+          minLength: 1
+          description: |
+            ***updated*** name of a good type
+          example: 'updated g. type name'
+        description:
+          type: string
+          maxLength: 200
+          minLength: 1
+          description: |
+            ***updated*** description of a good type
+          example: 'updated good type description'
+        order:
+          type: integer
+          description: |
+            ***updated*** order of a good type placed in the menu
+          example: 5
+
+    GoodForPost:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 20
+          minLength: 1
+          description: name of a good
+          required: true
+          example: 'good name'
+        description:
+          type: string
+          maxLength: 200
+          minLength: 1
+          description: description of a good
+          required: true
+          example: 'good description'
+        image:
+          type: string
+          format: binary
+        available:
+          type: boolean
+          description: availability of a good
+          required: true
+          example: true
+        previousPrice:
+          type: integer
+          description: previous price of a good
+          example: 599
+        price:
+          type: integer
+          description: price of a good
+          required: true
+          example: 399
+        weight:
+          type: integer
+          description: weight of a good in grams
+          required: true
+          example: 441
+        lifetime:
+          type: integer
+          description: lifetime of a good in hours
+          example: 2
+          required: true
+        quantity:
+          type: integer
+          description: quantity of a good in pcs
+          required: true
+          example: 1
+
+    GoodForPatch:
+      type: object
+      properties:
+        name:
+          required: false
+          type: string
+          maxLength: 20
+          minLength: 1
+          description: updated name of a good
+          example: 'updated good name'
+        description:
+          required: false
+          type: string
+          maxLength: 200
+          minLength: 1
+          description: updated description of a good
+          example: 'updated good description'
+        image:
+          required: false
+          type: string
+          format: binary
+        available:
+          required: false
+          type: boolean
+          description: updated availability of a good
+          example: false
+        previousPrice:
+          required: false
+          type: integer
+          description: updated previous price of a good
+          example: 799
+        price:
+          required: false
+          type: integer
+          description: updated price of a good
+          example: 599
+        weight:
+          required: false
+          type: integer
+          description: updated weight of a good in grams
+          example: 221
+        lifetime:
+          required: false
+          type: integer
+          description: updated lifetime of a good in hours
+          example: 5
+        quantity:
+          required: false
+          type: integer
+          description: updated quantity of a good in pcs
+          example: 5
+
+    LoginAndSignup:
+      type: object
+      properties:
+        username:
+          required: true
+          type: string
+          maxLength: 20
+          minLength: 1
+          description: login username
+          example: 'username'
+
+        password:
+          required: true
+          type: string
+          maxLength: 20
+          minLength: 1
+          description: login password
+          example: 'password'
+

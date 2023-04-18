@@ -1,5 +1,6 @@
 from app import db, app
 from flask import jsonify, request
+# from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 from routes.auth import admin_required
 from routes.tables_to_json import good_types_json, goods_json
@@ -7,26 +8,18 @@ from api_calls.error import ApiError
 from api_calls.json_validation import GoodTypeSchema, UpdateGoodTypeSchema, GoodSchema, UpdateGoodSchema
 from models import GoodTypes, Goods
 
-def convert_formdata_to_json(formdata):
-	json = {}
 
-	for key, value in formdata.items():
-		if value.lower() == 'true':
-			json[key] = True
-		elif value.lower() == 'false':
-			json[key] = False
-		elif value.isdigit():
-			json[key] = int(value)
-		elif key == 'image':
-			pass
-		else:
-			json[key] = value
+@app.route('/api/drop_db', methods=['GET'])
+# @admin_required()
+def drop_database():
 
-	return json
+	db.drop_all() # Note: if you drop database, run manage.py in your console
+
+	return jsonify(database_dropped=True), 200
 
 
 @app.route('/api/good_types', methods=['POST'])
-@admin_required()
+# @admin_required()
 def create_good_type():
 
 	json = request.json
@@ -101,7 +94,7 @@ def get_good_type_by_id(id):
 
 
 @app.route('/api/good_types/<int:id>', methods=['PATCH'])
-@admin_required()
+# @admin_required()
 def update_good_type(id):
 	
 	good_type_by_id = GoodTypes.query.filter_by(id=id).first()
@@ -115,9 +108,6 @@ def update_good_type(id):
 		raise ApiError('GOOD_TYPE_DOESNT_EXIST', status_code=409)
 
 	json = request.json
-	if len(json) == 0:
-		raise ApiError('JSON_MUST_CONTAIN_DATA')
-
 	UpdateGoodTypeSchema().validate(json)
 
 	GoodTypes.query.filter_by(id=id).update(json)
@@ -129,24 +119,23 @@ def update_good_type(id):
 
 
 @app.route('/api/good_types', methods=['DELETE'])
-@admin_required()
+# @admin_required()
 def delete_good_types():
 
 	good_types_deleted = db.session.query(GoodTypes).all()
-	
 	if len(good_types_deleted) == 0 or good_types_deleted == None:
-		raise ApiError('NO_GOOD_TYPES_HAVE_BEEN_ADDED', status_code=409)
+		raise ApiError('NOTHING_TO_DELETE')
 
 	for good_type in good_types_deleted:
 		db.session.delete(good_type)
 
 	db.session.commit()
 
-	return good_types_json(good_types_deleted, is_many=True, field_list=None, expand=None), 200
+	return jsonify(message='SUCCESS_DELETED_ALL_GOOD_TYPES'), 200
 
 
 @app.route('/api/good_types/<int:id>', methods=['DELETE'])
-@admin_required()
+# @admin_required()
 def delete_good_type(id):
 
 	good_type_by_id = GoodTypes.query.filter_by(id=id).first()
@@ -167,7 +156,7 @@ def delete_good_type(id):
 
 
 @app.route('/api/good_types/<int:id>/goods', methods=['POST'])
-@admin_required()
+# @admin_required()
 def create_good(id):
 	
 	good_type_by_id = GoodTypes.query.filter_by(id=id).first()
@@ -180,12 +169,7 @@ def create_good(id):
 			
 		raise ApiError('GOOD_TYPE_DOESNT_EXIST', status_code=409)
 
-	formdata = request.form.to_dict(flat=True)
-	json = convert_formdata_to_json(formdata)
-
-	if len(json) == 0 and 'image' not in request.files:                                                                                                                                                      
-		raise ApiError('FORMDATA_MUST_CONTAIN_DATA') 
-
+	json = request.json
 	GoodSchema().validate(json)
 
 	name = json.get('name')
@@ -199,27 +183,11 @@ def create_good(id):
 	db.session.add(good)
 	db.session.commit()
 
-	if 'image' in request.files:
-		image_file = request.files['image'].read()
-
-		if len(image_file) < 50:
-			raise ApiError('INVALID_PNG_IMAGE')
-
-		with open(f'./static/images/goodImage{str(good.id)}.png', 'wb') as file:
-			file.write(image_file)
-
-	else:
-		raise ApiError('NO_IMAGE_FILE_PROVIDED')
-
-	good.image = f'https://eugenv.ru/static/images/goodImage{str(good.id)}.png'
-
-	db.session.add(good)
-	db.session.commit()
-
 	return goods_json(good, is_many=False, field_list=None), 201
 
 
 @app.route('/api/good_types/goods', methods=['GET'])
+# @admin_required()
 def get_goods():
 
 	field_list = request.args.get('select')
@@ -234,6 +202,7 @@ def get_goods():
 
 
 @app.route('/api/good_types/goods/<int:id>', methods=['GET'])
+# @admin_required()
 def get_good_by_id(id):
 
 	field_list = request.args.get('select')
@@ -253,7 +222,7 @@ def get_good_by_id(id):
 
 
 @app.route('/api/good_types/goods/<int:id>', methods=['PATCH'])
-@admin_required()
+# @admin_required()
 def update_good(id):
 
 	good_by_id = Goods.query.filter_by(id=id).first()
@@ -266,31 +235,8 @@ def update_good(id):
 			
 		raise ApiError('GOOD_DOESNT_EXIST', status_code=409)
 
-	formdata = request.form.to_dict(flat=True)
-	json = convert_formdata_to_json(formdata)
-
-	if len(json) == 0 and 'image' not in request.files:                                                                                                                                                      
-		raise ApiError('FORMDATA_MUST_CONTAIN_DATA') 
-
+	json = request.json
 	UpdateGoodSchema().validate(json)
-
-	if 'name' in json:
-		name = json.get('name')
-		good = Goods.query.filter_by(name=name).first()
-
-		if good is not None:
-			raise ApiError('GOOD_ALREADY_EXISTS', status_code=409)
-
-	if 'image' in request.files:
-		image_file = request.files['image'].read()
-
-		if len(image_file) == 0:                                                                                                                                        
-                        raise ApiError('INVALID_PNG_IMAGE')
-
-		with open(f'./static/images/goodImage{str(id)}.png', 'wb') as file:
-			file.write(image_file)
-
-		json['image'] = f'https://eugenv.ru/static/images/goodImage{str(id)}.png'
 
 	Goods.query.filter_by(id=id).update(json)
 	db.session.commit()
@@ -301,24 +247,23 @@ def update_good(id):
 
 
 @app.route('/api/good_types/goods', methods=['DELETE'])
-@admin_required()
+# @admin_required()
 def delete_goods():
 
 	goods_deleted = db.session.query(Goods).all()
-
 	if len(goods_deleted) == 0 or goods_deleted == None:
-		raise ApiError('NO_GOODS_HAVE_BEEN_ADDED', status_code=409)
+		raise ApiError('NOTHING_TO_DELETE')
 
 	for good in goods_deleted:
 		db.session.delete(good)
 
 	db.session.commit()
 
-	return goods_json(goods_deleted, is_many=True, field_list=None), 200
+	return jsonify(message='SUCCESS_DELETED_ALL_GOODS'), 200
 
 
 @app.route('/api/good_types/goods/<int:id>', methods=['DELETE'])
-@admin_required()
+# @admin_required()
 def delete_good(id):
 
 	good_by_id = Goods.query.filter_by(id=id).first()
@@ -335,4 +280,3 @@ def delete_good(id):
 	db.session.commit()
 
 	return goods_json(good_by_id, is_many=False, field_list=None), 200
-

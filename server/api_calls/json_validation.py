@@ -44,7 +44,6 @@ class UpdateGoodTypeSchema(JsonSchema):
 class GoodSchema(JsonSchema):
 
 	name = fields.Str(required=True,  validate=validate.Length(min=1, max=20, error='INVALID_LENGTH'))
-	image = fields.Str(required=True,  validate=validate.Length(min=1, max=200, error='INVALID_LENGTH'))
 	available = fields.Boolean(required=True)
 	previousPrice = fields.Int()
 	price = fields.Int(required=True)
@@ -57,7 +56,6 @@ class GoodSchema(JsonSchema):
 class UpdateGoodSchema(JsonSchema):
 
 	name = fields.Str(validate=validate.Length(min=1, max=20, error='INVALID_LENGTH'))
-	image = fields.Str(validate=validate.Length(min=1, max=200, error='INVALID_LENGTH'))
 	available = fields.Boolean()
 	previousPrice = fields.Int()
 	price = fields.Int()

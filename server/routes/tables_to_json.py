@@ -33,6 +33,12 @@ def goods_json(good_table, is_many, field_list):
 
 def good_types_json(good_type_table, is_many, field_list, expand):
     no_class_context = ('goodsCount')
+    
+    
+    if field_list is not None:
+        if 'goods' in field_list and 'goodsCount' not in field_list:
+            raise ApiError('INVALID_SELECT_FIELD')
+
     field_list = split_select(field_list, GoodTypes, no_class_context)
 
 

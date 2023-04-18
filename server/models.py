@@ -28,6 +28,23 @@ class User(db.Model): # has relationships with History, CurrentOrders and Addres
 		return '<User %r>' % (self.username)
 
 
+class Admin(db.Model):
+	id = db.Column(db.Integer, primary_key = True)
+
+	username = db.Column(db.String(64), unique=True)
+	password_hash = db.Column(db.String(128))
+	
+	def hash_password(self, password):
+		self.password_hash = generate_password_hash(password=password)
+
+	def verify_password(self, password):
+		return check_password_hash(self.password_hash, password)
+
+	def __repr__(self): # for debugging (just call the object's name to use this magic method)
+		return '<Admin %r>' % (self.username)
+
+
+
 class Address(db.Model): # connected to User data-table
 	id = db.Column(db.Integer, primary_key = True)
 
@@ -115,7 +132,7 @@ class Goods(db.Model): # has relationships with CurrentGoods, CookedGoods, Goods
 	cookedGoods = db.relationship('CookedGoods', backref='good', lazy='dynamic')
 	goodsDetails = db.relationship('GoodsDetails', backref='good', lazy='dynamic')
 
-	good_type_id = db.Column(db.Integer, db.ForeignKey('good_types.id'))
+	typeId = db.Column(db.Integer, db.ForeignKey('good_types.id'))
 
 	name = db.Column(db.String(20), unique = True, nullable=False)
 	image = db.Column(db.String(200))

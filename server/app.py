@@ -12,18 +12,25 @@ from datetime import timedelta
 
 def create_app(db_name, password):
     app = Flask(__name__)
+    
+    # congigure application and application's modules
+
     app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://postgres:{password}@localhost/{db_name}' # authorizing the database (only on localhost now)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config.from_envvar('ENV_FILE_LOCATION')
 
+    app.config.from_envvar('ENV_FILE_LOCATION')
     app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-    app.config['JWT_ACCESS_COOKIE_PATH'] = '/api/'
-    app.config['JWT_REFRESH_COOKIE_PATH'] = '/api/'
+    app.config['JWT_COOKIE_SAMESITE'] = 'None'
     app.config['JWT_COOKIE_CSRF_PROTECT'] = False
     app.config['JWT_COOKIE_SECURE'] = True
 
-    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(minutes=5)
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=1)
     app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
+
+    app.config['SWAGGER'] = {
+        'uiversion': 3,
+        'openapi': '3.0.2'
+    }
 
     # Initialize extensions
     # To use the application instances above, instantiate with an application:
@@ -42,8 +49,15 @@ db = SQLAlchemy()
 migrate = Migrate()
 ma = Marshmallow()
 jwt = JWTManager()
-cors = CORS()
-swagger = Swagger(template_file='routes/api_docs/api_docs.yml')
+cors = CORS(supports_credentials=True)
+
+swagger_config = Swagger.DEFAULT_CONFIG
+swagger_config['swagger_ui_bundle_js'] = '//unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js'
+swagger_config['swagger_ui_standalone_preset_js'] = '//unpkg.com/swagger-ui-dist@3/swagger-ui-standalone-preset.js'
+swagger_config['jquery_js'] = '//unpkg.com/jquery@2.2.4/dist/jquery.min.js'
+swagger_config['swagger_ui_css'] = '//unpkg.com/swagger-ui-dist@3/swagger-ui.css'
+
+swagger = Swagger(template_file='routes/api_docs/api_docs.yml', config=swagger_config)
 
 with open("local_db_info.json") as ldi:
     info = json.load(ldi)
