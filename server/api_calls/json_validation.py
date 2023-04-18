@@ -50,7 +50,7 @@ class GoodSchema(JsonSchema):
 	weight = fields.Int(required=True)
 	lifetime = fields.Int(required=True)
 	description = fields.Str(required=True, validate=validate.Length(min=1, max=200, error='INVALID_LENGTH'))
-	quantity = fields.Int(quired=True)
+	quantity = fields.Int(required=True)
 
 
 class UpdateGoodSchema(JsonSchema):
@@ -63,3 +63,7 @@ class UpdateGoodSchema(JsonSchema):
 	lifetime = fields.Int()
 	description = fields.Str(validate=validate.Length(min=1, max=200, error='INVALID_LENGTH'))
 	quantity = fields.Int()
+
+class LoginAndSignupSchema(JsonSchema):
+	username = fields.Str(required=True, validate=validate.Length(min=1, max=64, error='INVALID_LENGTH'))
+	password = fields.Str(required=True, validate=validate.Length(min=1, error='INVALID_LENGTH'))

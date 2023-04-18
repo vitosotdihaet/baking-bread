@@ -31,6 +31,27 @@ info:
       - To `delete` good types or goods use ***DELETE*** method
 
       -----------------------------------------------
+
+      ***The below table defines the `errors` that API may return***
+        
+      | Status Code | Description | Message |
+      | --- | --- | --- |
+      | 405 | METHOD NOT ALLOWED | ***METHOD_NOT_ALLOWED*** |
+      | 400 | BAD REQUEST | ***NO_SIGNUP_DATA_PROVIDED*** |
+      | 400 | BAD REQUEST | ***NO_LOGIN_DATA_PROVIDED*** |
+      | 409 | CONFLICT | ***INVALID_LOGIN_OR_PASSWORD*** |
+      | 409 | CONFLICT | ***USER_ALREADY_EXISTS*** |
+      | 409 | CONFLICT | ***ADMIN_ALREADY_EXISTS*** |
+      | 409 | CONFLICT | ***USER_DOESNT_EXIST*** |
+      | 409 | CONFLICT | ***ADMIN_DOESNT_EXIST*** |
+      | 401 | UNAUTHORIZED | ***NO_TOKEN_PROVIDED*** |
+      | 401 | UNAUTHORIZED | ***NO_FRESH_TOKEN_PROVIDED*** |
+      | 401 | UNAUTHORIZED | ***TOKEN_HAS_EXPIRED*** |
+      | 403 | FORBIDDEN | ***ADMIN_RIGHTS_REQUIRED*** |
+      | 422 | UNPROCESSABLE ENTITY | ***INVALID_TOKEN*** |
+
+      -----------------------------------------------
+
   
   version: 'beta 0.0.1'
 
@@ -145,6 +166,7 @@ paths:
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
+
       requestBody:
         required: true
         description: Logged in using this `JSON`
@@ -178,6 +200,7 @@ paths:
         -----------------------------------------------
 
         To sign up as an user we have to send request to *baking-bread.com/***api/user/signup** with ***POST*** method
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
@@ -219,6 +242,7 @@ paths:
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
+
       requestBody:
         required: true
         description: Logged in using this `JSON`
@@ -236,10 +260,14 @@ paths:
     post:
       security:
         - cookieAuth: []
+
       operationId: logout
+
       summary: Logout
+
       tags:
         - Authenticaton API
+
       description: |
         ## Logout using this ***POST*** request!
 
@@ -254,6 +282,7 @@ paths:
         -----------------------------------------------
 
         To log out we have to send request to *baking-bread.com/***api/logout** with ***POST*** method
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
@@ -267,10 +296,14 @@ paths:
     post:
       security:
         - cookieAuth: []
+
       operationId: refresh
+
       summary: Refresh the access-token
+
       tags:
         - Authenticaton API
+
       description: |
         ## Refresh the access-token using this ***POST*** request!
 
@@ -285,6 +318,7 @@ paths:
         -----------------------------------------------
 
         To refresh the access-token we have to send request to *baking-bread.com/***api/refresh** with ***POST*** method
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
@@ -298,10 +332,14 @@ paths:
     get:
       security:
         - cookieAuth: []
+
       operationId: user_access
+
       summary: Checks if the user logged in and has access to this endpoint
+
       tags:
         - Authenticaton API
+
       description: |
         ## Check the user access using this ***GET*** request!
 
@@ -316,6 +354,7 @@ paths:
         -----------------------------------------------
 
         To check the user access we have to send request to *baking-bread.com/***api/user/access** with ***GET*** method
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
@@ -329,10 +368,14 @@ paths:
     get:
       security:
         - cookieAuth: []
+
       operationId: admin_access
+
       summary: Checks if the user logged in and has admin rights
+
       tags:
         - Authenticaton API
+
       description: |
         ## Check the user's admin rights using this ***GET*** request!
 
@@ -347,6 +390,7 @@ paths:
         -----------------------------------------------
 
         To check the user's admin rights we have to send request to *baking-bread.com/***api/admin/access** with ***GET*** method
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
@@ -356,18 +400,22 @@ paths:
           description: |
             Response: User has **logged in** and has **admin rights** to enter this endpoint
 
-  /api/user/delete_account:
+  /api/user:
     delete:
       security:
         - cookieAuth: []
+
       operationId: delete_account
+
       summary: Deletes an **user** account
+
       tags:
         - Authenticaton API
+
       description: |
         ## Deletes an **user** account using this ***POST*** request!
 
-        This `POST` deletes an **user** account.
+        This `DELETE` deletes an **user** account.
 
         -----------------------------------------------
         
@@ -377,7 +425,8 @@ paths:
         
         -----------------------------------------------
 
-        To delete an account we have to send request to *baking-bread.com/***api/user/delete_account** with ***DELETE*** method
+        To delete an account we have to send request to *baking-bread.com/***api/user** with ***DELETE*** method
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
@@ -387,18 +436,22 @@ paths:
           description: |
             Response: **Deleted** the account successfully
 
-  /api/admin/delete_account:
+  /api/admin:
     delete:
       security:
         - cookieAuth: []
+
       operationId: delete_admin
+
       summary: Deletes an **admin** account
+
       tags:
         - Authenticaton API
+
       description: |
         ## Deletes an **admin** account using this ***POST*** request!
 
-        This `POST` deletes an **admin** account.
+        This `DELETE` deletes an **admin** account.
 
         -----------------------------------------------
         
@@ -408,7 +461,8 @@ paths:
         
         -----------------------------------------------
 
-        To delete an account we have to send request to *baking-bread.com/***api/admin/delete_account** with ***DELETE*** method
+        To delete an account we have to send request to *baking-bread.com/***api/admin** with ***DELETE*** method
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
@@ -423,10 +477,14 @@ paths:
     post:
       security:
         - cookieAuth: []
+
       operationId: create_good_type
+
       summary: Create a good type
+
       tags:
         - Good types API
+
       description: |
         ## Create a good type using this ***POST*** request!
 
@@ -452,9 +510,11 @@ paths:
         | 400              | BAD REQUEST | If JSON in the body of the request failed validation. **(check the response messages for more info)**|
         | 405              | METHOD NOT ALLOWED| If endpoint doesn't support given request method.|
         | 409              | CONFLICT | If you try to add existing good type.|
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
+
       requestBody:
         required: true
         description: Created good type object
@@ -462,6 +522,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GoodTypeForPost'
+
       responses:
         201:
           description: |
@@ -510,9 +571,12 @@ paths:
 
     get:
       summary: Get all good types
+
       tags:
         - Good types API
+
       operationId: get_good_types
+
       description: |
         ## Get all good types using this ***GET*** request!
 
@@ -534,9 +598,11 @@ paths:
         | 400         | BAD REQUEST | The query parameters provided were invalid or used incorrectly. Check the response messages for more information. |
         | 405         | METHOD NOT ALLOWED | The HTTP method used is not supported by this endpoint. |
         | 409         | CONFLICT    | No good types have been added yet. |
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
+
       parameters:
       - in: query
         name: select
@@ -566,14 +632,20 @@ paths:
     delete:
       security:
         - cookieAuth: []
+
       operationId: delete_good_types
+
       tags:
         - Good types API
+
       summary: Delete all good types
+
       description: DELETE request for deleting good types
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
+
       responses:
         200:
           description: |
@@ -587,14 +659,17 @@ paths:
     get:
       tags:
         - Good types API
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
+
       operationId: get_good_type_by_id
+
       summary: Get a good type
+
       description: GET request for getting good type by its ID
-      produces:
-      - application/json
+
       parameters:
       - name: id
         in: path
@@ -609,6 +684,7 @@ paths:
         name: expand
         description: set value to 'goods' or e.g. 'goods.select=name' (already known param, but applies to goods in the list) to get list of all related goods in good type
         type: string
+
       responses:
         200:
           description: Got JSON response
@@ -622,20 +698,27 @@ paths:
     patch:
       security:
         - cookieAuth: []
+
       operationId: update_good_type_by_id
+
       tags:
         - Good types API
+
       summary: Update a good type
+
       description: PATCH request for updating good type by its ID
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
+
       parameters:
         - name: id
           in: path
           description: Requesting good type by its ID
           required: true
           type: integer
+
       requestBody:
         required: true
         description: Updated good type object
@@ -643,6 +726,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/GoodTypeForPatch'
+
       responses:
         200:
           description: |
@@ -661,24 +745,27 @@ paths:
     delete:
       security:
         - cookieAuth: []
+
       operationId: delete_good_type_by_id
+
       tags:
         - Good types API
+
       summary: Delete a good type
+
       description: DELETE request for deleting good type by its ID
-      produces:
-      - application/json
-      consumes:
-        - application/json
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
+
       parameters:
         - name: id
           in: path
           description: Requesting good type by its ID
           required: true
           type: integer
+
       responses:
         200:
           description: |
@@ -696,10 +783,14 @@ paths:
     post:
       security:
         - cookieAuth: []
+
       operationId: create_good
+
       tags:
         - Goods API
+
       summary: Create good related to good type with desired ID
+
       description: |
         ## Create a Good related to a Good Type
 
@@ -723,15 +814,18 @@ paths:
         | 400 | Bad Request | The JSON in the request body failed validation. Check the response message for more information. |
         | 405 | Method Not Allowed | The HTTP method used is not supported by this endpoint. |
         | 409 | Conflict | The good you are trying to add already exists. |
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
+
       parameters:
         - name: id
           in: path
           description: Requesting good type by its ID
           required: true
           type: integer
+
       requestBody:
         required: true
         description: Created good object
@@ -739,6 +833,7 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/GoodForPost'
+
       responses:
         200:
           description: |
@@ -758,19 +853,23 @@ paths:
     get:
       tags:
         - Goods API
+
       operationId: get_goods
+
       summary: Get all goods
+
       description: GET request for getting all of the goods
-      produces:
-      - application/json
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
+
       parameters:
       - in: query
         name: select
         description: select desired fields of goods you want to get, separated by coma (e.g. 'name,id')
         type: string
+
       responses:
         200:
           description: Got JSON response
@@ -784,14 +883,20 @@ paths:
     delete:
       security:
         - cookieAuth: []
+
       operationId: delete_all_goods
+
       tags:
         - Goods API
+
       summary: Delete all goods
+
       description: DELETE request for deleting all goods
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
+
       responses:
         200:
           description: |
@@ -805,14 +910,17 @@ paths:
     get:
       tags:
         - Goods API
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
+
       operationId: get_good_by_id
+
       summary: Get a good
+
       description: GET request for getting good by its ID
-      produces:
-      - application/json
+
       parameters:
       - name: id
         in: path
@@ -823,6 +931,7 @@ paths:
         name: select
         description: select desired fields of good you want to get, separated by coma (e.g. 'name,id')
         type: string
+
       responses:
         200:
           description: Got JSON response
@@ -836,24 +945,27 @@ paths:
     patch:
       security:
         - cookieAuth: []
+
       operationId: update_good_by_id
+
       tags:
         - Goods API
+
       summary: Update a good
+
       description: PATCH request for updating good by its ID
-      produces:
-      - application/json
-      consumes:
-        - application/json
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
+
       parameters:
         - name: id
           in: path
           description: Requesting good type by its ID
           required: true
           type: integer
+
       requestBody:
         required: true
         description: Updated good object
@@ -861,6 +973,7 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/GoodForPatch'
+
       responses:
         200:
           description: |
@@ -879,24 +992,27 @@ paths:
     delete:
       security:
         - cookieAuth: []
+
       operationId: delete_good_by_id
+
       tags:
         - Goods API
+
       summary: Delete a good
+
       description: DELETE request for deleting good by its ID
-      produces:
-      - application/json
-      consumes:
-        - application/json
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
+
       parameters:
         - name: id
           in: path
           description: Requesting good type by its ID
           required: true
           type: integer
+
       responses:
         200:
           description: |
@@ -1067,7 +1183,7 @@ components:
         username:
           required: true
           type: string
-          maxLength: 20
+          maxLength: 64
           minLength: 1
           description: login username
           example: 'username'
@@ -1075,8 +1191,6 @@ components:
         password:
           required: true
           type: string
-          maxLength: 20
           minLength: 1
           description: login password
           example: 'password'
-

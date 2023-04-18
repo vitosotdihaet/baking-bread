@@ -11,6 +11,7 @@ from flask_jwt_extended import (
 
 from models import User, Admin
 from api_calls.error import ApiError
+from api_calls.json_validation import LoginAndSignupSchema
 
 
 # ERROR HANDLING PART
@@ -62,11 +63,10 @@ def admin_required():
 @app.route('/api/user/signup', methods=['POST'])
 def signup_post():
 
-    username = request.json.get('username')
-    password = request.json.get('password')
-
-    if username is None or password is None: # check for missing arguments
-        raise ApiError('LACK_OF_SINGUP_DATA')
+    json = request.json
+    LoginAndSignupSchema().validate(json)
+    username = json.get('username')
+    password = json.get('password')
 
     user = db.session.query(User).filter_by(username=username).first()
 
@@ -83,7 +83,7 @@ def signup_post():
 
     # creating access token with info of user id and admin rights and refresh token with info of user id
     # note that here we set `fresh=True` for access to endpoint `delete-account`
-    # User will have `fresh=False` parameter in token with accessing `signup` endpoint and `refresh` endpoint
+    # [DEPRECATED UNTIL PRODUCTION] User will have `fresh=False` parameter in token with accessing `signup` endpoint and `refresh` endpoint
     # so anyone who has fresh token could not do some crtitical things without fresh token, such as deleting an account
     access_token = create_access_token(identity=userId, additional_claims={'is_administrator': False})
     refresh_token = create_refresh_token(identity=userId, additional_claims={'is_administrator': False})
@@ -100,8 +100,10 @@ def signup_post():
 @app.route('/api/user/login', methods=['POST'])
 def login_post():
 
-    username = request.json.get('username')
-    password = request.json.get('password')
+    json = request.json
+    LoginAndSignupSchema().validate(json)
+    username = json.get('username')
+    password = json.get('password')
 
 
     if username is None or password is None: # check for missing arguments
@@ -136,16 +138,18 @@ def login_post():
 @app.route('/api/admin/signup', methods=['POST'])
 def signup_admin_post():
 
-    username = request.json.get('username')
-    password = request.json.get('password')
+    json = request.json
+    LoginAndSignupSchema().validate(json)
+    username = json.get('username')
+    password = json.get('password')
 
     if username is None or password is None: # check for missing arguments
-        raise ApiError('LACK_OF_SINGUP_DATA')
+        raise ApiError('NO_SIGNUP_DATA_PROVIDED')
 
     user = db.session.query(Admin).filter_by(username=username).first()
 
     if user is not None:
-        raise ApiError('ADMIN_USER_ALREADY_EXISTS', status_code=409)
+        raise ApiError('ADMIN_ALREADY_EXISTS', status_code=409)
 
 
     user = Admin(username=username)
@@ -157,7 +161,7 @@ def signup_admin_post():
 
     # creating access token with info of user id and admin rights and refresh token with info of user id
     # note that here we set `fresh=True` for access to endpoint `delete-account`
-    # User will have `fresh=False` parameter in token with accessing `signup` endpoint and `refresh` endpoint
+    # [DEPRECATED UNTIL PRODUCTION] User will have `fresh=False` parameter in token with accessing `signup` endpoint and `refresh` endpoint
     # so anyone who has fresh token could not do some crtitical things without fresh token, such as deleting an account
     access_token = create_access_token(identity=userId, additional_claims={'is_administrator': True})
     refresh_token = create_refresh_token(identity=userId, additional_claims={'is_administrator': True})
@@ -174,8 +178,10 @@ def signup_admin_post():
 @app.route('/api/admin/login', methods=['POST'])
 def login_admin_post():
 
-    username = request.json.get('username')
-    password = request.json.get('password')
+    json = request.json
+    LoginAndSignupSchema().validate(json)
+    username = json.get('username')
+    password = json.get('password')
 
 
     if username is None or password is None: # check for missing arguments
@@ -220,20 +226,20 @@ def logout_post():
 
 
 # checks via @jwt_required decorator if user has access-token
-@app.route('/api/user/delete_account', methods=['DELETE'])
+@app.route('/api/user', methods=['DELETE'])
 @jwt_required()
-def delete_account():
+def delete_user():
 
     claims = get_jwt()
     identity = get_jwt_identity()
 
     if claims['is_administrator']:
-        raise ApiError('ONLY_FOR_USERS')
+        raise ApiError('ONLY_FOR_USERS', 403)
 
     user = db.session.query(User).filter_by(id = identity).first()
 
     if user is None:
-        raise ApiError('USER_DOESNT_EXIST')
+        raise ApiError('USER_DOESNT_EXIST', 409)
 
     db.session.delete(user)
     db.session.commit()
@@ -244,8 +250,8 @@ def delete_account():
     return response
 
 
-# checks via @jwt_required decorator if user has access-token
-@app.route('/api/admin/delete_account', methods=['DELETE'])
+# checks via @admin_required decorator if user has admin rights
+@app.route('/api/admin', methods=['DELETE'])
 @admin_required()
 def delete_admin():
 
@@ -254,7 +260,7 @@ def delete_admin():
     user = db.session.query(Admin).filter_by(id = identity).first()
 
     if user is None:
-        raise ApiError('ADMIN_USER_DOESNT_EXIST')
+        raise ApiError('ADMIN_DOESNT_EXIST', 409)
 
     db.session.delete(user)
     db.session.commit()
