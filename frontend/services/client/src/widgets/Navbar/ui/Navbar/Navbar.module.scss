@@ -3,9 +3,9 @@
     z-index: var(--navbar-index);
     top: 0;
     width: 100vw;
-    box-shadow: 0 -0.5rem 2rem rgb(0 0 0 / 40%);
-    padding: 1rem 0rem;
+    padding: 1rem 0;
     background: var(--color-background);
+    box-shadow: 0 -0.5rem 2rem rgb(0 0 0 / 40%);
 }
 
 .locationIcon {
@@ -14,7 +14,7 @@
 
 .navTop {
     width: min(600px, 90vw);
-    margin: 0rem auto;
+    margin: 0 auto;
     margin-bottom: 1rem;
 }
 

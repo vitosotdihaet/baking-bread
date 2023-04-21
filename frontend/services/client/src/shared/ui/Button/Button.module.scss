@@ -1,17 +1,17 @@
 .Button {
-    border: none;
-    outline: none;
-    background: none;
-    cursor: pointer;
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+    border: none;
+    background: none;
+    cursor: pointer;
+    outline: none;
     transition: opacity 0.1s ease-in-out;
 
     &:hover {
-        opacity: 0.9;
         fill-opacity: 0.8;
+        opacity: 0.9;
         stroke-opacity: 0.8;
     }
 }
@@ -48,29 +48,29 @@ a.Button {
 }
 
 .clear {
-    border: none;
-    background: none;
-    outline: none;
     display: block;
-    margin: 0;
     padding: 0;
+    border: none;
+    margin: 0;
+    background: none;
     color: var(--color-primary);
+    outline: none;
 }
 
 .after {
+    margin-left: 0.4rem;
     color: var(--color-gray);
     mix-blend-mode: luminosity;
-    margin-left: 0.4rem;
 }
 
 .before {
+    margin-right: 0.4rem;
     color: var(--color-gray);
     mix-blend-mode: luminosity;
-    margin-right: 0.4rem;
 }
 
 .loader {
-    margin: 0px 10px;
+    margin: 0 10px;
 }
 
 .fullWidth {
@@ -94,7 +94,7 @@ a.Button {
 }
 
 .xs {
-    border-radius: 0rem;
+    border-radius: 0;
 }
 
 .sm {
