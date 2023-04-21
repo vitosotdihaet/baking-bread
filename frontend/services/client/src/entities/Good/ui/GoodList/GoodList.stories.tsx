@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { mockedListGoods } from '../../tests/good';
 import { GoodList } from './GoodList';
 
 export default {
@@ -8,7 +9,7 @@ export default {
 
 const Template: ComponentStory<typeof GoodList> = (args) => <GoodList {...args} />;
 
-export const Normal = Template.bind({});
-Normal.args = {
-
+export const Idle = Template.bind({});
+Idle.args = {
+    goods: mockedListGoods,
 };
