@@ -10,8 +10,8 @@
         "string-quotes": "single",
         "no-missing-end-of-source-newline": null,
         "block-no-empty": null,
-        "unit-allowed-list": ["%", "deg", "px", "rem", "ms"],
-        "declaration-no-important": true,
+        "unit-allowed-list": ["%", "deg", "px", "rem", "ms", "vw", "s"],
+        "declaration-no-important":null,
         "declaration-empty-line-before": [
             "always",
             {
