@@ -1,12 +1,14 @@
 import { useTranslation } from 'next-i18next';
 import { FC } from 'react';
+import { useSelector } from 'react-redux';
+import { getGoodsWithType } from 'widgets/Navbar/api/goodsTypeApi';
+import { GoodTypeScroller } from 'features/goodTypeScroller';
 import { LocationIcon, SearchIcon } from 'shared/assets/icons';
 import { classNames } from 'shared/lib/classNames/classNames';
 import { AppLink } from 'shared/ui/AppLink/AppLink';
 import { Icon } from 'shared/ui/Icon/Icon';
 import { Row } from 'shared/ui/Stack';
 import { Typography } from 'shared/ui/Typography/Typography';
-import { NavbarScroller } from '../NavbarScroller/NavbarScroller';
 
 import cls from './Navbar.module.scss';
 
@@ -17,9 +19,14 @@ interface NavbarProps {
 export const Navbar: FC<NavbarProps> = (props) => {
     const { className } = props;
     const { t } = useTranslation();
+    const { data } = useSelector(getGoodsWithType.select());
+
+    if (!data) {
+        return null;
+    }
 
     return (
-        <div className={classNames(cls.nav, {}, [className])}>
+        <nav className={classNames(cls.nav, {}, [className])}>
             <Row
                 justify='between'
                 align='center'
@@ -27,8 +34,13 @@ export const Navbar: FC<NavbarProps> = (props) => {
             >
                 <Icon SVG={LocationIcon} className={cls.locationIcon} />
                 <div className={cls.deliveryInfo}>
-                    <AppLink href='/'>
-                        <Typography variant='h3' bold>{t('Highland Village, TX')}</Typography>
+                    <AppLink className={cls.black} href='/'>
+                        <Typography
+                            variant='h5'
+                            size='md'
+                            title={t<string>('Highland Village, TX')}
+                            bold
+                        />
                     </AppLink>
                     <Typography
                         className={cls.deliveryTime}
@@ -41,7 +53,7 @@ export const Navbar: FC<NavbarProps> = (props) => {
                 </div>
                 <Icon SVG={SearchIcon} />
             </Row>
-            <NavbarScroller />
-        </div>
+            <GoodTypeScroller goodTypes={data} />
+        </nav>
     );
 };
