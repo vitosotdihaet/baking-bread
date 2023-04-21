@@ -70,6 +70,7 @@ module.exports = {
         'boundaries/element-types': 'warn',
         '@typescript-eslint/no-var-requires': 'off',
         'no-console': 'off',
+        'consistent-return': 'off',
         'no-underscore-dangle': 'off',
         'i18next/no-literal-string': [
             'error',
