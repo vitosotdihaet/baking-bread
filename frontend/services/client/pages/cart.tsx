@@ -1,6 +1,6 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { wrapper } from 'app/providers/StoreProvider';
-import HomePage from 'pages/HomePage';
+import CartPage from 'pages/CartPage';
 import { getGoodsWithType } from 'widgets/Navbar';
 
 export const getStaticProps = wrapper.getStaticProps(({ dispatch }) => async ({ locale }) => {
@@ -13,4 +13,4 @@ export const getStaticProps = wrapper.getStaticProps(({ dispatch }) => async ({ 
     };
 });
 
-export default HomePage;
+export default CartPage;
