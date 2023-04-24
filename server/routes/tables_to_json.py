@@ -4,13 +4,13 @@ from flask import jsonify
 from api_calls.error import ApiError
 
 
-def split_select(field_list, meta_class, no_class_context):
+def split_select(field_list, meta_class, no_class_context, unnecessary_class_context):
     if field_list is not None:
         field_list = field_list.split(',')
         variables = dir(meta_class)
 
         for field in field_list:
-            if (field not in variables and field not in no_class_context) or field == '':
+            if (field not in variables and field not in no_class_context) or field in unnecessary_class_context or field == '':
                 raise ApiError('INVALID_SELECT_FIELD')
 
     return field_list
@@ -23,8 +23,10 @@ class GoodsSchema(ma.SQLAlchemyAutoSchema):
 
 
 def goods_json(good_table, is_many, field_list):
+    
     no_class_context = ()
-    field_list = split_select(field_list, Goods, no_class_context)
+    unnecessary_class_context = ()
+    field_list = split_select(field_list, Goods, no_class_context, unnecessary_class_context)
 
     schema = GoodsSchema(many=is_many, only = field_list)
  
@@ -32,14 +34,10 @@ def goods_json(good_table, is_many, field_list):
 
 
 def good_types_json(good_type_table, is_many, field_list, expand):
+    
     no_class_context = ('goodsCount')
-    
-    
-    if field_list is not None:
-        if 'goods' in field_list and 'goodsCount' not in field_list:
-            raise ApiError('INVALID_SELECT_FIELD')
-
-    field_list = split_select(field_list, GoodTypes, no_class_context)
+    unnecessary_class_context = ('goods')
+    field_list = split_select(field_list, GoodTypes, no_class_context, unnecessary_class_context)
 
 
     class GoodTypesSchema(ma.SQLAlchemyAutoSchema):
