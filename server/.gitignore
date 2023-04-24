@@ -2,3 +2,4 @@
 migrations
 local_db_info.json
 __pycache__
+static/images/*.png
