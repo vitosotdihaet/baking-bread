@@ -58,7 +58,8 @@ def good_types_json(good_type_table, is_many, field_list, expand):
                         raise ApiError('INVALID_EXPAND_VALUE_PARAMETER')
 
                     no_class_context = ()
-                    good_field_list = split_select(good_field_list, Goods, no_class_context)
+                    unnecessary_class_context = ()
+                    good_field_list = split_select(good_field_list, Goods, no_class_context, unnecessary_class_context)
 
                 else:
                     raise ApiError('INVALID_EXPAND_VALUE_PARAMETER')
