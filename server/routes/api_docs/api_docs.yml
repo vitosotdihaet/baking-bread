@@ -4,7 +4,7 @@
 info:
   title: 'Baking Bread API DOCS'
   description: |
-      ## FOR USAGE 
+      ## FOR USAGE
 
       Just scroll down to the interactive API requests!
 
@@ -32,7 +32,7 @@ info:
 
       -----------------------------------------------
 
-      ***The below table defines the `errors` that API may return***
+      ## TABLE OF ***ERRORS*** THAT API MAY RETURN
         
       | Status Code | Description | Message |
       | --- | --- | --- |
