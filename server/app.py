@@ -17,7 +17,7 @@ def create_app(db_name, password):
 
     # Postgresql configuration
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://postgres:{password}@localhost/{db_name}' # authorizing the database (only on localhost now)
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://postgres:{password}@localhost/{db_name}' # authorizing the database
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # JWT tokens configuration
