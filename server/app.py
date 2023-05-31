@@ -64,7 +64,7 @@ swagger_config['swagger_ui_standalone_preset_js'] = '//unpkg.com/swagger-ui-dist
 swagger_config['jquery_js'] = '//unpkg.com/jquery@2.2.4/dist/jquery.min.js'
 swagger_config['swagger_ui_css'] = '//unpkg.com/swagger-ui-dist@3/swagger-ui.css'
 
-swagger = Swagger(template_file='routes/api_docs/api_docs.yml', config=swagger_config)
+swagger = Swagger(template_file='swagger/api_docs.yml', config=swagger_config)
 
 # Setting postgresql login data
 

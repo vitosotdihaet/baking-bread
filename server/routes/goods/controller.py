@@ -1,31 +1,15 @@
 from app import db, app
 from flask import jsonify, request
 
-from routes.auth import admin_required
-from routes.tables_to_json import good_types_json, goods_json
+from routes.auth.controller import admin_required
+from routes.goods.tables_to_json import good_types_json, goods_json
+
+from pkg.formdata_to_json import convert_formdata_to_json
+
 from api_calls.error import ApiError
-from api_calls.json_validation import GoodTypeSchema, UpdateGoodTypeSchema, GoodSchema, UpdateGoodSchema
+from api_calls.json_validation.goods import GoodTypeSchema, UpdateGoodTypeSchema, GoodSchema, UpdateGoodSchema
+
 from models import GoodTypes, Goods
-
-
-# Converting form-data from a request into json
-# for the continious json validation
-def convert_formdata_to_json(formdata):
-	json = {}
-
-	for key, value in formdata.items():
-		if value.lower() == 'true':
-			json[key] = True
-		elif value.lower() == 'false':
-			json[key] = False
-		elif value.isdigit():
-			json[key] = int(value)
-		elif key == 'image':
-			pass
-		else:
-			json[key] = value
-
-	return json
 
 
 # Admin rights are required to access this endpoint
@@ -119,7 +103,7 @@ def get_good_type_by_id(id):
 	if len(request_params) != 0:
 		for param in request_params:
 			if param not in available_params:
-				raise ApiError('INVALID_QUERY_PARAM')
+				raise ApiError('UNKNOWN_QUERY_PARAM')
 	
 	good_type = GoodTypes.query.filter_by(id=id).first()
 
@@ -285,10 +269,10 @@ def create_good(id):
 		image_file = request.files['image'].read()
 
 		if 'png' not in request.files['image'].filename:
-			raise ApiError('IMAGE_MUST_BE_PNG')
+			raise ApiError('IMAGE_MUST_BE_PNG', status_code=422)
 
 		if len(image_file) < 50:
-			raise ApiError('INVALID_PNG_IMAGE')
+			raise ApiError('INVALID_PNG_IMAGE', status_code=422)
 
 	else:
 		raise ApiError('NO_IMAGE_FILE_PROVIDED')
@@ -418,7 +402,10 @@ def update_good(id):
 	if 'image' in request.files:
 		image_file = request.files['image'].read()
 
-		if len(image_file) == 0:
+		if 'png' not in request.files['image'].filename:
+			raise ApiError('IMAGE_MUST_BE_PNG', status_code=422)
+
+		if len(image_file) < 50:
 			raise ApiError('INVALID_PNG_IMAGE')
 
 		# Saving the image to static/ folder

@@ -6,7 +6,7 @@ info:
   description: |
       ## FOR USAGE
 
-      Just scroll down to the interactive API requests!
+      Just scroll down to the **interactive API requests**!
 
       If any not really understandable `errors` occur, contact ***@Eugene Toropkin***
 
@@ -36,19 +36,47 @@ info:
         
       | Status Code | Description | Message |
       | --- | --- | --- |
+      | ***Global errors*** |
       | 405 | METHOD NOT ALLOWED | ***METHOD_NOT_ALLOWED*** |
+      | ***Authenticaton API errors*** |
       | 400 | BAD REQUEST | ***NO_SIGNUP_DATA_PROVIDED*** |
       | 400 | BAD REQUEST | ***NO_LOGIN_DATA_PROVIDED*** |
+      | 400 | BAD REQUEST | ***INVALID_PHONE_NUMBER*** |
+      | 400 | BAD REQUEST | ***INVALID_OTP_CODE*** |+
       | 409 | CONFLICT | ***INVALID_LOGIN_OR_PASSWORD*** |
-      | 409 | CONFLICT | ***USER_ALREADY_EXISTS*** |
       | 409 | CONFLICT | ***ADMIN_ALREADY_EXISTS*** |
-      | 409 | CONFLICT | ***USER_DOESNT_EXIST*** |
       | 409 | CONFLICT | ***ADMIN_DOESNT_EXIST*** |
       | 401 | UNAUTHORIZED | ***NO_TOKEN_PROVIDED*** |
       | 401 | UNAUTHORIZED | ***NO_FRESH_TOKEN_PROVIDED*** |
       | 401 | UNAUTHORIZED | ***TOKEN_HAS_EXPIRED*** |
-      | 403 | FORBIDDEN | ***ADMIN_RIGHTS_REQUIRED*** |
       | 422 | UNPROCESSABLE ENTITY | ***INVALID_TOKEN*** |
+      | 403 | FORBIDDEN | ***ADMIN_RIGHTS_REQUIRED*** |
+      | ***Query params errors*** |
+      | 400 | BAD REQUEST | ***UNKNOWN_QUERY_PARAM*** |
+      | 400 | BAD REQUEST | ***INVALID_SORT_VALUE*** |
+      | 400 | BAD REQUEST | ***INVALID_EXPAND_VALUE*** |
+      | 400 | BAD REQUEST | ***INVALID_EXPAND_VALUE_PARAMETER*** |
+      | 400 | BAD REQUEST | ***INVALID_SELECT_FIELD*** |
+      | ***JSON validation errors*** |
+      | 400 | BAD REQUEST | ***"field_name": "MISSING_DATA"*** |
+      | 400 | BAD REQUEST | ***"field_name": "UNKNOWN_FIELD"*** |
+      | 400 | BAD REQUEST | ***"field_name": "INVALID_LENGTH"*** |
+      | 400 | BAD REQUEST | ***"field_name": "INVALID_TYPE"*** |
+      | 400 | BAD REQUEST | ***"field_name": "NOT_NULLABLE"*** |
+      | ***Good types API errors*** |
+      | 409 | CONFLICT | ***GOOD_TYPE_ALREADY_EXISTS*** |
+      | 409 | CONFLICT | ***NO_GOOD_TYPES_HAVE_BEEN_ADDED*** |
+      | 409 | CONFLICT | ***GOOD_TYPE_DOESNT_EXIST*** |
+      | 409 | CONFLICT | ***GOOD_TYPE_NAME_ALREADY_EXISTS*** |
+      | ***Goods API errors*** |
+      | 400 | BAD REQUEST | ***FORMDATA_MUST_CONTAIN_DATA*** |
+      | 422 | UNPROCESSABLE ENTITY | ***IMAGE_MUST_BE_PNG*** |
+      | 422 | UNPROCESSABLE ENTITY | ***INVALID_PNG_IMAGE*** |
+      | 400 | BAD REQUEST | ***NO_IMAGE_FILE_PROVIDED*** |
+      | 409 | CONFLICT | ***GOOD_ALREADY_EXISTS*** |
+      | 409 | CONFLICT | ***GOOD_DOESNT_EXIST*** |
+      | 409 | CONFLICT | ***NO_GOODS_HAVE_BEEN_ADDED*** |
+      | 409 | CONFLICT | ***GOOD_NAME_ALREADY_EXISTS*** |
 
       -----------------------------------------------
 
@@ -70,8 +98,12 @@ externalDocs:
   url: https://github.com/vitosotdihaet/baking-bread
 
 tags:
-  - name: Authenticaton API
+  - name: Admin authenticaton API
     description: Do everything with authentication :)
+  - name: User OTP authentication API
+    description: Do everything with (not) our OTP authentication :)
+  - name: Test authentication API
+    description: Do everything with testing :)
   - name: Good types API
     description: Do everything with our good types :)
   - name: Goods API
@@ -98,27 +130,106 @@ servers: [
 ################################################################################
 #                                    Paths                                     #
 ################################################################################
+
 paths:
+  /api/user/send_code:
+    post:
+      summary: Send a verification code via call
+
+      tags:
+        - User OTP authentication API
+
+      operationId: send_ver_code
+
+      description: |
+        ## Send an OTP code using this ***POST*** request!
+
+        -----------------------------------------------
+        
+        📝 **Note:** In the next example we will use base URL *baking-bread.com*
+
+        Due *testing* we likely will use *eugenv.ru* base URL.
+        
+        -----------------------------------------------
+
+        To send an OTP code via call we have to send request to *baking-bread.com/***api/user/send_code** with ***POST*** method.
+
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+
+      requestBody:
+        required: true
+        description: Set a phone to send a OTP code to
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendVerificationCode'
+
+      responses:
+        200:
+          description: Got JSON response from the OTP service
+
+  /api/user/verify:
+    post:
+      summary: Verify an OTP code
+
+      tags:
+        - User OTP authentication API
+
+      operationId: verify_code
+
+      description: |
+        ## Verify an OTP code using this ***POST*** request!
+
+        -----------------------------------------------
+        
+        📝 **Note:** In the next example we will use base URL *baking-bread.com*
+
+        Due *testing* we likely will use *eugenv.ru* base URL.
+        
+        -----------------------------------------------
+
+        To verify an OTP code we have to send request to *baking-bread.com/***api/user/verify** with ***POST*** method.
+
+      externalDocs:
+        description: Project repository
+        url: https://github.com/vitosotdihaet/baking-bread
+
+      requestBody:
+        required: true
+        description: Set a uid of a OTP code request and the code
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyCode'
+
+      responses:
+        200:
+          description: Verified and authorized successfully
+
   /api/admin/signup:
     post:
       operationId: admin_signup
+
       summary: Signup with admin rights
+
       tags:
-        - Authenticaton API
+        - Admin authenticaton API
+
       description: |
         ## Sign up with **admin rights** using this ***POST*** request!
 
-        This `POST` request registers admins.
-
         -----------------------------------------------
         
-        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
+        📝 **Note:** In the next example we will use base URL *baking-bread.com*
 
-        Due testing we likely will use *eugenv.ru* server base URL.
+        Due *testing* we likely will use *eugenv.ru* base URL.
         
         -----------------------------------------------
 
-        To sign up as an admin we have to send request to *baking-bread.com/***api/admin/signup** with ***POST*** method
+        To sign up with **admin rights** we have to send request to *baking-bread.com/***api/admin/signup** with ***POST*** method.
+
       externalDocs:
         description: Project repository
         url: https://github.com/vitosotdihaet/baking-bread
@@ -139,13 +250,14 @@ paths:
   /api/admin/login:
     post:
       operationId: admin_login
+
       summary: Login with admin rights
+
       tags:
-        - Authenticaton API
+        - Admin authenticaton API
+
       description: |
         ## Login with **admin rights** using this ***POST*** request!
-
-        This `POST` request logs in admins.
 
         -----------------------------------------------
         
@@ -155,13 +267,13 @@ paths:
         
         -----------------------------------------------
         
-        📝 **Note 2:** Log in as an ***administrator*** before making requests marked with a padlock
+        📝 **Note 2:** Logging in as an **admin** gives you access making essential things.
 
-        Before login sign up as an ***administrator***
+        So be careful making requests such as requests with ***DELETE*** methods.
         
         -----------------------------------------------
 
-        To log in as an admin we have to send request to *baking-bread.com/***api/admin/login** with ***POST*** method
+        To log in as an admin we have to send request to *baking-bread.com/***api/admin/login** with ***POST*** method.
 
       externalDocs:
         description: Project repository
@@ -180,82 +292,6 @@ paths:
           description: |
             Response: Logged in as an **admin** successfully
 
-  /api/user/signup:
-    post:
-      operationId: signup
-      summary: Signup without admin rights
-      tags:
-        - Authenticaton API
-      description: |
-        ## Sign up without **admin rights** using this ***POST*** request!
-
-        This `POST` request registers users.
-
-        -----------------------------------------------
-        
-        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
-
-        Due testing we likely will use *eugenv.ru* server base URL.
-        
-        -----------------------------------------------
-
-        To sign up as an user we have to send request to *baking-bread.com/***api/user/signup** with ***POST*** method
-
-      externalDocs:
-        description: Project repository
-        url: https://github.com/vitosotdihaet/baking-bread
-
-      requestBody:
-        required: true
-        description: Signed up in using this `JSON`
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginAndSignup'
-
-      responses:
-        201:
-          description: |
-            Response: Signed up as an **user** successfully
-
-  /api/user/login:
-    post:
-      operationId: login
-      summary: Login without admin rights
-      tags:
-        - Authenticaton API
-      description: |
-        ## Login without **admin rights** using this ***POST*** request!
-
-        This `POST` request logs in users.
-
-        -----------------------------------------------
-        
-        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
-
-        Due testing we likely will use *eugenv.ru* server base URL.
-        
-        -----------------------------------------------
-
-        To log in as an user we have to send request to *baking-bread.com/***api/user/login** with ***POST*** method
-
-      externalDocs:
-        description: Project repository
-        url: https://github.com/vitosotdihaet/baking-bread
-
-      requestBody:
-        required: true
-        description: Logged in using this `JSON`
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginAndSignup'
-
-      responses:
-        201:
-          description: |
-            Response: Logged in as an **user** successfully
-
   /api/logout:
     post:
       security:
@@ -266,7 +302,8 @@ paths:
       summary: Logout
 
       tags:
-        - Authenticaton API
+        - Admin authenticaton API
+        - User OTP authentication API
 
       description: |
         ## Logout using this ***POST*** request!
@@ -302,7 +339,8 @@ paths:
       summary: Refresh the access-token
 
       tags:
-        - Authenticaton API
+        - Admin authenticaton API
+        - User OTP authentication API
 
       description: |
         ## Refresh the access-token using this ***POST*** request!
@@ -338,7 +376,7 @@ paths:
       summary: Checks if the user logged in and has access to this endpoint
 
       tags:
-        - Authenticaton API
+        - Test authentication API
 
       description: |
         ## Check the user access using this ***GET*** request!
@@ -374,7 +412,7 @@ paths:
       summary: Checks if the user logged in and has admin rights
 
       tags:
-        - Authenticaton API
+        - Test authentication API
 
       description: |
         ## Check the user's admin rights using this ***GET*** request!
@@ -400,42 +438,6 @@ paths:
           description: |
             Response: User has **logged in** and has **admin rights** to enter this endpoint
 
-  /api/user:
-    delete:
-      security:
-        - cookieAuth: []
-
-      operationId: delete_account
-
-      summary: Deletes an **user** account
-
-      tags:
-        - Authenticaton API
-
-      description: |
-        ## Deletes an **user** account using this ***POST*** request!
-
-        This `DELETE` deletes an **user** account.
-
-        -----------------------------------------------
-        
-        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
-
-        Due testing we likely will use *eugenv.ru* server base URL.
-        
-        -----------------------------------------------
-
-        To delete an account we have to send request to *baking-bread.com/***api/user** with ***DELETE*** method
-
-      externalDocs:
-        description: Project repository
-        url: https://github.com/vitosotdihaet/baking-bread
-
-      responses:
-        200:
-          description: |
-            Response: **Deleted** the account successfully
-
   /api/admin:
     delete:
       security:
@@ -446,7 +448,7 @@ paths:
       summary: Deletes an **admin** account
 
       tags:
-        - Authenticaton API
+        - Admin authenticaton API
 
       description: |
         ## Deletes an **admin** account using this ***POST*** request!
@@ -488,28 +490,15 @@ paths:
       description: |
         ## Create a good type using this ***POST*** request!
 
-        This `POST` request creates a new good type.
-
         -----------------------------------------------
         
-        📝 **Note:** In the next examples we will use base URL *baking-bread.com*
+        📝 **Note:** In the next example we will use base URL *baking-bread.com*
 
-        Due testing we likely will use *eugenv.ru* server base URL.
+        Due *testing* we likely will use *eugenv.ru* base URL.
         
         -----------------------------------------------
-
 
         To create a good type we have to send request to *baking-bread.com/***api/good_types** with ***POST*** method
-
-
-        **The below table defines the HTTP Status codes that this API may return**
-        
-        | Status Code      | Description | Reason                             |
-        | ---------------- | ------------| -----------------------------------|
-        | 201              | CREATED     | If a good type is created successfuly.   |
-        | 400              | BAD REQUEST | If JSON in the body of the request failed validation. **(check the response messages for more info)**|
-        | 405              | METHOD NOT ALLOWED| If endpoint doesn't support given request method.|
-        | 409              | CONFLICT | If you try to add existing good type.|
 
       externalDocs:
         description: Project repository
@@ -1194,3 +1183,26 @@ components:
           minLength: 1
           description: login password
           example: 'password'
+
+    SendVerificationCode:
+      type: object
+      properties:
+        phoneNumber:
+          required: true
+          type: string
+          description: phone to send a code to
+          example: '+79000000001'
+
+    VerifyCode:
+      type: object
+      properties:
+        uid:
+          required: true
+          type: string
+          description: uid of a user's code request
+          example: '29827486'
+        code:
+          required: true
+          type: string
+          description: Code we got via OTP service
+          example: '1000'

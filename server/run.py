@@ -1,8 +1,7 @@
 from app import app
 
-import routes.auth
-import routes.temp
-import routes.goods_management
+import routes.auth.controller
+import routes.goods.controller
 
 
 if __name__ == "__main__":
