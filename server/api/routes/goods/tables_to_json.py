@@ -1,7 +1,6 @@
-from app import ma
-from models import GoodTypes, Goods
-from flask import jsonify
-from api_calls.error import ApiError
+from api.extensions import ma
+from api.models import GoodTypes, Goods
+from api.error.error_template import ApiError
 from pkg.query_params.select import split_select
 
 
@@ -33,7 +32,7 @@ def good_types_json(good_type_table, is_many, field_list, expand):
         class Meta:
             model = GoodTypes
 
-        if expand is not None:
+        if expand is not None: # TODO: 1) adapt expand for many values; 2) try to make expand pkg module
             if '.' in expand:
                 expandValue, good_field_list = expand.split('.')
 

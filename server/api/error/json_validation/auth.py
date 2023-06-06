@@ -1,4 +1,4 @@
-from api_calls.json_validation.base_schema import JsonSchema
+from api.error.json_validation.base_schema import JsonSchema
 from marshmallow import fields, validate
 
 

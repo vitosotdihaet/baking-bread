@@ -1,15 +1,16 @@
-from app import db, app
+from app import app
+from api.extensions import db
 from flask import jsonify, request
 
-from routes.auth.controller import admin_required
-from routes.goods.tables_to_json import good_types_json, goods_json
+from api.routes.auth.controller import admin_required
+from api.routes.goods.tables_to_json import good_types_json, goods_json
 
-from pkg.formdata_to_json import convert_formdata_to_json
+from pkg.convert_to_json import convert_formdata_to_json
 
-from api_calls.error import ApiError
-from api_calls.json_validation.goods import GoodTypeSchema, UpdateGoodTypeSchema, GoodSchema, UpdateGoodSchema
+from api.error.error_template import ApiError
+from api.error.json_validation.goods import GoodTypeSchema, UpdateGoodTypeSchema, GoodSchema, UpdateGoodSchema
 
-from models import GoodTypes, Goods
+from api.models import GoodTypes, Goods
 
 
 # Admin rights are required to access this endpoint

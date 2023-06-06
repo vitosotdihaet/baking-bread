@@ -1,10 +1,9 @@
+from configs.constants import cfg
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_marshmallow import Marshmallow
-from flask_jwt_extended import JWTManager
-from flask_cors import CORS
-from flasgger import Swagger
+from api.extensions import db, migrate, ma, jwt, cors, swagger
+
+import flask_monitoringdashboard as dashboard
+from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 
 import json
 from datetime import timedelta
@@ -15,9 +14,25 @@ def create_app(db_name, password):
     
     # Application's configuration
 
+    # Monitoring dashboard configuration
+
+
+    def get_user_id():
+        try:
+            verify_jwt_in_request()
+        except:
+            return 'anonimous client'
+
+        return get_jwt_identity()
+
+
+    dashboard.config.group_by = get_user_id
+    dashboard.config.init_from(file='configs/dashboard.cfg')
+    dashboard.bind(app)
+
     # Postgresql configuration
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://postgres:{password}@localhost/{db_name}' # authorizing the database
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql+psycopg2://postgres:{password}@localhost/{db_name}' # authorizing the database (only on localhost now)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     # JWT tokens configuration
@@ -50,28 +65,5 @@ def create_app(db_name, password):
     return app
 
 
-db = SQLAlchemy()
-migrate = Migrate()
-ma = Marshmallow()
-jwt = JWTManager()
-cors = CORS(supports_credentials=True) # CORS configuration to allow including cookies
-
-# Swagger appearance configuration
-
-swagger_config = Swagger.DEFAULT_CONFIG
-swagger_config['swagger_ui_bundle_js'] = '//unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js'
-swagger_config['swagger_ui_standalone_preset_js'] = '//unpkg.com/swagger-ui-dist@3/swagger-ui-standalone-preset.js'
-swagger_config['jquery_js'] = '//unpkg.com/jquery@2.2.4/dist/jquery.min.js'
-swagger_config['swagger_ui_css'] = '//unpkg.com/swagger-ui-dist@3/swagger-ui.css'
-
-swagger = Swagger(template_file='swagger/api_docs.yml', config=swagger_config)
-
-# Setting postgresql login data
-
-with open("local_db_info.json") as ldi:
-    info = json.load(ldi)
-    db_name = info.get('name')
-    password = info.get('password')
-
-
-app = create_app(db_name, password)
+# Create Flask application
+app = create_app(cfg['postgres']['DB_NAME'], cfg['postgres']['DB_PASSWORD'])

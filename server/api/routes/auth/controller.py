@@ -1,7 +1,8 @@
 from functools import wraps
 
-from app import db, app, jwt
-from flask import abort, jsonify, request, redirect, url_for
+from app import app
+from api.extensions import db, jwt
+from flask import jsonify, request
 
 import requests
 
@@ -14,10 +15,10 @@ from flask_jwt_extended import (
     set_refresh_cookies, unset_jwt_cookies, verify_jwt_in_request, get_jwt
 )
 
-from models import User, Admin
+from api.models import User, Admin
 
-from api_calls.error import ApiError
-from api_calls.json_validation.auth import AdminLoginAndSignupSchema, UserLoginAndSignupSchema, VerifyOTPSchema, ResendOTPSchema
+from api.error.error_template import ApiError
+from api.error.json_validation.auth import AdminLoginAndSignupSchema, UserLoginAndSignupSchema, VerifyOTPSchema, ResendOTPSchema
 
 
 # ERROR HANDLING PART

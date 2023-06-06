@@ -21,9 +21,11 @@ class ApiError(Exception): # editable class template for all kinds of errors
         
         return for_json
 
+
 @app.errorhandler(ApiError) # handles all kinds of errors (executes with `raise ApiError({some data})`)
 def error_response_callback(error):
     return jsonify(error.to_dict()), error.status_code
+
 
 @app.errorhandler(405)
 def error_response_callback(error):

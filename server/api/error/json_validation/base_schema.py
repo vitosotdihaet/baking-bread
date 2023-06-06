@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, validate
-from api_calls.error import ApiError
+from api.error.error_template import ApiError
 
 
 fields.Field.default_error_messages = {

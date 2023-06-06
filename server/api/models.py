@@ -1,5 +1,4 @@
-from app import db
-
+from api.extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -9,23 +8,12 @@ class User(db.Model): # has relationships with History, CurrentOrders and Addres
 	currentOrders = db.relationship('CurrentOrders', backref='client', lazy='dynamic')
 	adresses = db.relationship('Address', backref='client', lazy='dynamic')
 
-	username = db.Column(db.String(64), unique=True)
 	name = db.Column(db.String(64))
 	email = db.Column(db.String(120), unique=True)
-	password_hash = db.Column(db.String(128))
 	balance = db.Column(db.Integer)
 	birthday = db.Column(db.Date)
 	phone = db.Column(db.String(21))
 	role = db.Column(db.String(10))
-	
-	def hash_password(self, password):
-		self.password_hash = generate_password_hash(password=password)
-
-	def verify_password(self, password):
-		return check_password_hash(self.password_hash, password)
-
-	def __repr__(self): # for debugging (just call the object's name to use this magic method)
-		return '<User %r>' % (self.username)
 
 
 class Admin(db.Model):
@@ -39,10 +27,6 @@ class Admin(db.Model):
 
 	def verify_password(self, password):
 		return check_password_hash(self.password_hash, password)
-
-	def __repr__(self): # for debugging (just call the object's name to use this magic method)
-		return '<Admin %r>' % (self.username)
-
 
 
 class Address(db.Model): # connected to User data-table
@@ -89,6 +73,7 @@ class HistoryGoods(db.Model): # relationship table with extra data (related to h
 
 	good_id = db.Column(db.Integer, db.ForeignKey('goods.id'))
 	history_id = db.Column(db.Integer, db.ForeignKey('history.id'))
+
 	quantity = db.Column(db.Integer)
 
 

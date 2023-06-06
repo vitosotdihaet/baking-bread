@@ -1,6 +1,5 @@
 .env
 migrations
-local_db_info.json
 __pycache__
 <<<<<<< Updated upstream
 static/images/*.png

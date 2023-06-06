@@ -1,8 +1,9 @@
+from configs.constants import cfg
 from app import app
 
-import routes.auth.controller
-import routes.goods.controller
+import api.routes.auth.controller
+import api.routes.goods.controller
 
 
-if __name__ == "__main__":
-	app.run(host='0.0.0.0', port=5000)
+if __name__ == '__main__':
+	app.run(host=cfg['server']['HOST'], port=cfg['server']['PORT'])
