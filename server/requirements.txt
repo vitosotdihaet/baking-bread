@@ -12,3 +12,4 @@ marshmallow-sqlalchemy
 marshmallow
 flasgger
 pyyml
+flask_monitoringdashboard
