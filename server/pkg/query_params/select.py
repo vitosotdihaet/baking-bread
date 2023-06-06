@@ -1,4 +1,4 @@
-from api_calls.error import ApiError
+from api.error.error_template import ApiError
 
 
 def split_select(field_list, meta_class, no_class_context, unnecessary_class_context):
