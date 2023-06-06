@@ -1,4 +1,4 @@
 # Baking Bread
 Baking bread is an online bakery!
 
-<image src=prototype.png width=750/>
+<image src=https://eugenv.ru/static/images/goodImage21.png width=450/>

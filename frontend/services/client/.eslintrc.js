@@ -68,6 +68,10 @@ module.exports = {
         '@typescript-eslint/no-var-requires': 'warn',
         '@typescript-eslint/ban-types': 'off',
         'boundaries/element-types': 'warn',
+        '@typescript-eslint/no-var-requires': 'off',
+        'no-console': 'off',
+        'consistent-return': 'off',
+        'no-underscore-dangle': 'off',
         'i18next/no-literal-string': [
             'error',
             {
@@ -78,7 +82,7 @@ module.exports = {
     },
     overrides: [
         {
-            files: ['**/src/**/*.{test,stories}.{ts,tsx}'],
+            files: ['**/src/**/*.{test,stories}.{ts,tsx}', '**/src/**/tests/*'],
             rules: {
                 'i18next/no-literal-string': 'off',
                 'max-len': 'off',
@@ -92,4 +96,7 @@ module.exports = {
             },
         },
     ],
+    globals: {
+        __PROJECT__: true
+    }
 };

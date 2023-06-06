@@ -21,3 +21,5 @@ type DeepPartial<T> = {
 };
 
 type SvgIconType = React.FunctionComponent<React.SVGProps<SVGSVGElement>>
+
+declare const __PROJECT__: 'production' | 'development' | 'storybook';

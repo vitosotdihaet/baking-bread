@@ -1,0 +1,13 @@
+Flask
+flask-cors
+flask-marshmallow
+flask-migrate
+flask-SQLAlchemy
+flask-login
+flask-openid
+flask-jwt-extended
+psycopg2
+python-dotenv
+marshmallow-sqlalchemy
+marshmallow
+flasgger

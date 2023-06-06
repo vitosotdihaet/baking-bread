@@ -1,5 +1,7 @@
 import { Preview } from '@storybook/react';
-import { StyleDecorator } from 'shared/config/storybook/StyleDecorator';
+import { I18nDecorator } from '../../src/shared/config/storybook/I18nDecorator';
+import { StyleDecorator } from '../../src/shared/config/storybook/StyleDecorator';
+import i18n from './i18n';
 import '../../src/app/styles/index.scss';
 
 const preview: Preview = {
@@ -12,7 +14,7 @@ const preview: Preview = {
             },
         },
     },
-    decorators: [StyleDecorator],
+    decorators: [StyleDecorator, I18nDecorator(i18n)],
 };
 
 export default preview;

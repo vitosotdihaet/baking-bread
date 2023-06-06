@@ -1,3 +1,5 @@
+export { StoreProvider } from './ui/StoreProvider';
+
 export {
     createReduxStore,
     wrapper,

@@ -1,10 +1,10 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { wrapper } from 'app/providers/StoreProvider';
-import { fetchAllUsers } from 'features/UserList/model/slice/userSlice';
-import HomePage from 'pages/HomePage/ui/HomePage';
+import HomePage from 'pages/HomePage';
+import { getGoodsWithType } from 'widgets/Navbar';
 
 export const getStaticProps = wrapper.getStaticProps(({ dispatch }) => async ({ locale }) => {
-    await dispatch(fetchAllUsers());
+    await dispatch(getGoodsWithType.initiate());
 
     return {
         props: {

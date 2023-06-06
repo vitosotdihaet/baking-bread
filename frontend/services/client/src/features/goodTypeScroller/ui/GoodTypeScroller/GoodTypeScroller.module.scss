@@ -1,17 +1,15 @@
 .scroller {
     width: 100vw;
+
     -ms-overflow-style: none;
     overflow-x: scroll;
-    scrollbar-width: none;
     scrollbar-width: 0;
+    scrollbar-width: none;
     white-space: nowrap;
 
     &::-webkit-scrollbar {
         display: none;
     }
-
-    -ms-overflow-style: none;
-    scrollbar-width: none;
 
     &> :first-child {
         margin-left: 0.5rem;

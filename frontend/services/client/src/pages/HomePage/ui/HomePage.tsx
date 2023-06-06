@@ -1,9 +1,11 @@
-import { FC, useState } from 'react';
+import {
+    FC,
+} from 'react';
+import { useGetGoodsWithType } from 'widgets/Navbar/api/goodsTypeApi';
+import { Page } from 'widgets/Page/Page';
+import { GoodListWithType } from 'features/goodListWithType';
 import { classNames } from 'shared/lib/classNames/classNames';
-import { useTranslation } from 'next-i18next';
-import { StateSchema } from 'app/providers/StoreProvider';
-import { useSelector } from 'react-redux';
-import Link from 'next/link';
+import { Column } from 'shared/ui/Stack';
 
 interface HomePageProps {
     className?: string;
@@ -11,21 +13,25 @@ interface HomePageProps {
 
 const HomePage: FC<HomePageProps> = (props) => {
     const { className } = props;
-    const { t } = useTranslation();
-    const userData = useSelector((state: StateSchema) => state.userState?.data || []);
+    const { data } = useGetGoodsWithType();
+
+    if (!data) {
+        return null;
+    }
 
     return (
-        <div className={classNames('', {}, [className])}>
-            {t('HomePage')}
-            {userData && userData?.map(({ id, title }) => (
-                <div key={id}>
-                    {id}
-                    {' '}
-                    {title}
-                </div>
-            ))}
-            <Link href='/auth'>{t('Auth')}</Link>
-        </div>
+        <>
+            <Page className={classNames('', {}, [className])}>
+                <Column gap='32'>
+                    {data.map((goodType) => (
+                        <GoodListWithType
+                            key={goodType.id}
+                            goodType={goodType}
+                        />
+                    ))}
+                </Column>
+            </Page>
+        </>
     );
 };
 

@@ -1,4 +1,6 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { mockedListGoodType } from 'entities/Good/tests';
+import { StoreDecorator } from 'shared/config/storybook/StoreDecorator';
 import { GoodTypeScroller } from './GoodTypeScroller';
 
 export default {
@@ -8,7 +10,12 @@ export default {
 
 const Template: ComponentStory<typeof GoodTypeScroller> = (args) => <GoodTypeScroller {...args} />;
 
-export const Normal = Template.bind({});
-Normal.args = {
-
+export const Idle = Template.bind({});
+Idle.args = {
+    goodTypes: mockedListGoodType,
 };
+Idle.decorators = [StoreDecorator({
+    goodTypeScroller: {
+        selectedType: 'Savory Pastires',
+    },
+})];

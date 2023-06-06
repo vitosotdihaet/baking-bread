@@ -1,5 +1,5 @@
-const buildRules = require('./buildRules');
 const buildPlugins = require('./buildPlugins');
+const buildRules = require('./buildRules');
 
 const buildWebpackConfig = (
     /**
@@ -9,6 +9,7 @@ const buildWebpackConfig = (
 ) => {
     buildPlugins(config);
     buildRules(config);
+    config.resolve.fallback = { fs: false };
 
     return config;
 };

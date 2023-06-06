@@ -1,0 +1,8 @@
+.env
+migrations
+__pycache__
+<<<<<<< Updated upstream
+static/images/*.png
+=======
+static
+>>>>>>> Stashed changes

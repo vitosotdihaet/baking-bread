@@ -9,7 +9,7 @@ export default {
     },
 } as ComponentMeta<typeof Divider>;
 
-const Template: ComponentStory<typeof Divider> = (args) => <Divider { ...args } />;
+const Template: ComponentStory<typeof Divider> = (args) => <Divider {...args} />;
 
 export const Normal = Template.bind({});
 Normal.args = {

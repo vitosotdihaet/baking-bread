@@ -1,1 +1,3 @@
-export { CartPageDynamic as CartPage } from './ui/CartPage.dynamic';
+import CartPage from './ui/CartPage/CartPage';
+
+export default CartPage;

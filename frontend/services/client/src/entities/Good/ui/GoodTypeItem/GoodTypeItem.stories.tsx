@@ -1,4 +1,5 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { mockedGoodType } from 'entities/Good/tests/good';
 import { GoodTypeItem } from './GoodTypeItem';
 
 export default {
@@ -8,7 +9,7 @@ export default {
 
 const Template: ComponentStory<typeof GoodTypeItem> = (args) => <GoodTypeItem {...args} />;
 
-export const Normal = Template.bind({});
-Normal.args = {
-
+export const Idle = Template.bind({});
+Idle.args = {
+    goodType: mockedGoodType,
 };
