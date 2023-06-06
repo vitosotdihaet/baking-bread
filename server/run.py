@@ -3,6 +3,7 @@ from app import app
 
 import api.routes.auth.controller
 import api.routes.goods.controller
+import api.error.error_register
 
 
 if __name__ == '__main__':
