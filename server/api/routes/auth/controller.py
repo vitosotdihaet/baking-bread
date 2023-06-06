@@ -1,47 +1,20 @@
-from functools import wraps
-
 from app import app
 from api.extensions import db, jwt
 from flask import jsonify, request
-
-import requests
-
-import phonenumbers
-from phonenumbers import NumberParseException
-
 from flask_jwt_extended import (
     jwt_required, create_access_token,
     create_refresh_token, get_jwt_identity, set_access_cookies,
     set_refresh_cookies, unset_jwt_cookies, verify_jwt_in_request, get_jwt
 )
 
+import requests
+from functools import wraps
+import phonenumbers
+from phonenumbers import NumberParseException
+
 from api.models import User, Admin
-
 from api.error.error_template import ApiError
-from api.error.json_validation.auth import AdminLoginAndSignupSchema, UserLoginAndSignupSchema, VerifyOTPSchema, ResendOTPSchema
-
-
-# ERROR HANDLING PART
-
-@jwt.invalid_token_loader
-def invalid_token_callback(error_string):
-    return jsonify(message='INVALID_TOKEN'), 422
-
-
-@jwt.expired_token_loader
-def expired_token_callback(jwt_header, jwt_payload):
-    return jsonify(message='TOKEN_HAS_EXPIRED'), 401
-
-
-@jwt.unauthorized_loader
-def unauthorized_callback(error_string):
-    return jsonify(message='NO_TOKEN_PROVIDED'), 401
-
-
-@jwt.needs_fresh_token_loader
-def no_fresh_token_callback(jwt_header, jwt_payload):
-    return jsonify(message='NO_FRESH_TOKEN_PROVIDED'), 401
-
+from api.routes.auth.schemas import AdminLoginAndSignupSchema, UserLoginAndSignupSchema, VerifyOTPSchema, ResendOTPSchema
 
 
 # Only for development, delete for production.

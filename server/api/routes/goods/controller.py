@@ -4,13 +4,11 @@ from flask import jsonify, request
 
 from api.routes.auth.controller import admin_required
 from api.routes.goods.tables_to_json import good_types_json, goods_json
+from api.error.error_template import ApiError
+from api.routes.goods.schemas import GoodTypeSchema, UpdateGoodTypeSchema, GoodSchema, UpdateGoodSchema
+from api.models import GoodTypes, Goods
 
 from pkg.convert_to_json import convert_formdata_to_json
-
-from api.error.error_template import ApiError
-from api.error.json_validation.goods import GoodTypeSchema, UpdateGoodTypeSchema, GoodSchema, UpdateGoodSchema
-
-from api.models import GoodTypes, Goods
 
 
 # Admin rights are required to access this endpoint
@@ -24,7 +22,6 @@ def create_good_type():
 	# Validating a json from a request
 	# Json validation checks for missing required fields,
 	# required types of values in the fields, unknown unnecessary fields
-	# Check json_validation.py in the api_calls/ folder for more info
 	GoodTypeSchema().validate(json)
 
 	name = json.get('name')
@@ -40,7 +37,7 @@ def create_good_type():
 	db.session.commit()
 
 	# Response will contain created good type using json serialization via flask-marshmallow
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	# Query params `field_list` and `expand` only are used in GET methods,
 	# so they are set to `None`
 	return good_types_json(good_type, is_many=False, field_list=None, expand=None), 201
@@ -77,18 +74,18 @@ def get_good_types():
 
 	# Query param 'select' is responsible for putting only needed fields
 	# of good types in the response.
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	field_list = request_params.get('select')
 
 	# Query param 'expand' is responsible for putting list of goods related to each
 	# good type in the response.
 	# Also can be used with the query param 'select' like `expand=goods.select=name,id`,
 	# but there query param 'select' will be applied to each good in the list of them
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	expand = request_params.get('expand')
 
 	# Response will contain all good types using json serialization via flask-marshmallow
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	return good_types_json(good_types, is_many=True, field_list=field_list, expand=expand)
 
 
@@ -118,18 +115,18 @@ def get_good_type_by_id(id):
 
 	# Query param 'select' is responsible for putting only needed fields
 	# of a good type in the response.
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	field_list = request_params.get('select')
 
 	# Query param 'expand' is responsible for putting list of goods
 	# related to a good type in the response.
 	# Also can be used with the query param 'select' like `expand=goods.select=name,id`,
 	# but there query param 'select' will be applied to each good in the list of them
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	expand = request_params.get('expand')
 
 	# Response will contain the requested good type using json serialization via flask-marshmallow
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	return good_types_json(good_type, is_many=False, field_list=field_list, expand=expand)
 
 
@@ -163,7 +160,7 @@ def update_good_type(id):
 	# Validating a json from a request
 	# Json validation checks for missing required fields,
 	# required types of values in the fields, unknown unnecessary fields
-	# Check json_validation.py in the api_calls/ folder for more info
+	
 	UpdateGoodTypeSchema().validate(json)
 
 	GoodTypes.query.filter_by(id=id).update(json)
@@ -172,7 +169,7 @@ def update_good_type(id):
 	good_type = GoodTypes.query.filter_by(id=id).first()
 
 	# Response will contain updated good type using json serialization via flask-marshmallow
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	# Query params `field_list` and `expand` only are used in GET methods,
 	# so they are set to `None`
 	return good_types_json(good_type, is_many=False, field_list=None, expand=None), 200
@@ -195,7 +192,7 @@ def delete_good_types():
 	db.session.commit()
 
 	# Response will contain deleted good type using json serialization via flask-marshmallow
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	# Query params `field_list` and `expand` only are used in GET methods,
 	# so they are set to `None`
 	return good_types_json(good_types_deleted, is_many=True, field_list=None, expand=None), 200
@@ -221,7 +218,7 @@ def delete_good_type(id):
 	db.session.commit()
 
 	# Response will contain deleted good type using json serialization via flask-marshmallow
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	# Query params `field_list` and `expand` only are used in GET methods,
 	# so they are set to `None`
 	return good_types_json(good_type_by_id, is_many=False, field_list=None, expand=None), 200
@@ -255,7 +252,7 @@ def create_good(id):
 	# Validating a json from a request
 	# Json validation checks for missing required fields,
 	# required types of values in the fields, unknown unnecessary fields
-	# Check json_validation.py in the api_calls/ folder for more info
+	
 	GoodSchema().validate(json)
 
 	name = json.get('name')
@@ -296,7 +293,7 @@ def create_good(id):
 	db.session.commit()
 
 	# Response will contain created good using json serialization via flask-marshmallow
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	# Query param `field_list` is only used in GET methods,
 	# so it is set to `None`
 	return goods_json(good, is_many=False, field_list=None), 201
@@ -324,7 +321,7 @@ def get_goods():
 		raise ApiError('NO_GOODS_HAVE_BEEN_ADDED', status_code=409)
 
 	# Response will contain all goods using json serialization via flask-marshmallow
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	return goods_json(goods, is_many=True, field_list=field_list)
 
 
@@ -355,7 +352,7 @@ def get_good_by_id(id):
 		raise ApiError('GOOD_DOESNT_EXIST', status_code=409)
 
 	# Response will contain the requested good using json serialization via flask-marshmallow
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	return goods_json(good_by_id, is_many=False, field_list=field_list)
 
 
@@ -387,7 +384,7 @@ def update_good(id):
 	# Validating a json from a request
 	# Json validation checks for missing required fields,
 	# required types of values in the fields, unknown unnecessary fields
-	# Check json_validation.py in the api_calls/ folder for more info
+	
 	UpdateGoodSchema().validate(json)
 
 	# Because `name` field must be unique,
@@ -423,7 +420,7 @@ def update_good(id):
 	good = Goods.query.filter_by(id=id).first()
 
 	# Response will contain updated good using json serialization via flask-marshmallow
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	# Query param `field_list` is only used in GET methods,
 	# so it is set to `None`
 	return goods_json(good, is_many=False, field_list=None), 200
@@ -446,7 +443,7 @@ def delete_goods():
 	db.session.commit()
 
 	# Response will contain deleted goods using json serialization via flask-marshmallow
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	# Query param `field_list` is only used in GET methods,
 	# so it is set to `None`
 	return goods_json(goods_deleted, is_many=True, field_list=None), 200
@@ -472,7 +469,7 @@ def delete_good(id):
 	db.session.commit()
 
 	# Response will contain deleted good using json serialization via flask-marshmallow
-	# Check tables_to_json.py in the routes/ folder for more info
+	
 	# Query param `field_list` is only used in GET methods,
 	# so it is set to `None`
 	return goods_json(good_by_id, is_many=False, field_list=None), 200

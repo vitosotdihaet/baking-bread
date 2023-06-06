@@ -1,4 +1,4 @@
-# In future could be useful to separate different constants fro prod., dev., staging... etc.
+# In future could be useful to separate different constants for prod., dev., staging... etc.
 
 server:
   HOST: '0.0.0.0'

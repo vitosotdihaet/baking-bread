@@ -1,6 +1,6 @@
-from configs.constants import cfg
 from flask import Flask
 from api.extensions import db, migrate, ma, jwt, cors, swagger
+from configs.constants import cfg
 
 import flask_monitoringdashboard as dashboard
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
@@ -15,7 +15,6 @@ def create_app(db_name, password):
     # Application's configuration
 
     # Monitoring dashboard configuration
-
 
     def get_user_id():
         try:
