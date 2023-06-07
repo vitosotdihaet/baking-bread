@@ -7,3 +7,6 @@ server:
 postgres:
   DB_NAME: 'bakingbread'
   DB_PASSWORD: 'test3915'
+
+github:
+  token: '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'
