@@ -4,15 +4,15 @@ from flask import jsonify, request
 from flask_jwt_extended import (
     jwt_required, create_access_token,
     create_refresh_token, get_jwt_identity, set_access_cookies,
-    set_refresh_cookies, unset_jwt_cookies, verify_jwt_in_request, get_jwt
+    set_refresh_cookies, unset_jwt_cookies, get_jwt
 )
 
 import requests
-from functools import wraps
 import phonenumbers
 from phonenumbers import NumberParseException
 
 from api.models import User, Admin
+from api.routes.auth.access_decorator import role_required
 from api.error.error_template import ApiError
 from api.routes.auth.schemas import AdminLoginAndSignupSchema, UserLoginAndSignupSchema, VerifyOTPSchema, ResendOTPSchema
 
@@ -35,28 +35,6 @@ def delete_users():
 
 
 # AUTHENTICATION PART
-
-# A custom decorator that verifies that token is present in the request,
-# as well as insuring that the token has a claim indicating that the user is
-# an administrator
-def admin_required():
-    def wrapper(fn):
-
-        @wraps(fn)
-        def decorator(*args, **kwargs):
-
-            verify_jwt_in_request()
-            claims = get_jwt()
-
-            if claims['is_administrator']:
-                return fn(*args, **kwargs)
-
-            return jsonify(message='ADMIN_RIGHTS_REQUIRED'), 403
-
-        return decorator
-
-    return wrapper
-
 
 @app.route('/api/user/send_code', methods=['POST'])
 def send_verification_code():
@@ -198,8 +176,8 @@ def verify_code():
     else:
         userId = str(existing_user.id)
 
-    access_token = create_access_token(identity=userId, additional_claims={'is_administrator': False})
-    refresh_token = create_refresh_token(identity=userId, additional_claims={'is_administrator': False})
+    access_token = create_access_token(identity=userId, additional_claims={'admin': False})
+    refresh_token = create_refresh_token(identity=userId, additional_claims={'admin': False})
 
     response = jsonify(login=True, adminRights=False, id=userId, background=otp_response)
 
@@ -238,8 +216,8 @@ def signup_admin_post():
     # note that here we set `fresh=True` for access to endpoint `delete-account`
     # [DEPRECATED UNTIL PRODUCTION] User will have `fresh=False` parameter in token with accessing `signup` endpoint and `refresh` endpoint
     # so anyone who has fresh token could not do some crtitical things without fresh token, such as deleting an account
-    access_token = create_access_token(identity=userId, additional_claims={'is_administrator': True})
-    refresh_token = create_refresh_token(identity=userId, additional_claims={'is_administrator': True})
+    access_token = create_access_token(identity=userId, additional_claims={'admin': True})
+    refresh_token = create_refresh_token(identity=userId, additional_claims={'admin': True})
 
     response = jsonify(login=True, adminRights=True, id=userId)
 
@@ -276,8 +254,8 @@ def login_admin_post():
     userId = str(user.id)
 
     # creating access token with info of user id and admin rights and refresh token with info of user id
-    access_token = create_access_token(identity=userId, additional_claims={'is_administrator': True})
-    refresh_token = create_refresh_token(identity=userId, additional_claims={'is_administrator': True})
+    access_token = create_access_token(identity=userId, additional_claims={'admin': True})
+    refresh_token = create_refresh_token(identity=userId, additional_claims={'admin': True})
 
     response = jsonify(login=True, adminRights=True, id=userId)
 
@@ -308,7 +286,7 @@ def delete_user():
     claims = get_jwt()
     identity = get_jwt_identity()
 
-    if claims['is_administrator']:
+    if claims['admin']:
         raise ApiError('ONLY_FOR_USERS', 403)
 
     user = User.query.filter_by(id = identity).first()
@@ -327,7 +305,7 @@ def delete_user():
 
 # checks via @admin_required decorator if user has admin rights
 @app.route('/api/admin', methods=['DELETE'])
-@admin_required()
+@role_required('admin')
 def delete_admin():
 
     identity = get_jwt_identity()
@@ -354,9 +332,9 @@ def refresh_token():
 
     claims = get_jwt()
     identity = get_jwt_identity() # getting id of our user from the token
-    adminRights = claims['is_administrator']
+    adminRights = claims['admin']
 
-    access_token = create_access_token(identity=identity, additional_claims={'is_administrator': adminRights})
+    access_token = create_access_token(identity=identity, additional_claims={'admin': adminRights})
 
     response = jsonify(refresh=True)
     set_access_cookies(response, access_token)
@@ -372,18 +350,18 @@ def user_protected():
     claims = get_jwt()
     identity = get_jwt_identity()
 
-    return jsonify(access='approved', id=identity, adminRights=claims['is_administrator'])
+    return jsonify(access='approved', id=identity, adminRights=claims['admin'])
 
 
 # checks via @admin_required decorator if user has admin rights
 @app.route('/api/admin/access', methods=['GET'])
-@admin_required()
+@role_required('admin')
 def admin_protected():
 
     claims = get_jwt()
     identity = get_jwt_identity()
 
-    return jsonify(access='approved', id=identity, adminRights=claims['is_administrator'])
+    return jsonify(access='approved', id=identity, adminRights=claims['admin'])
 
 
 # # this decorator is mostly used for debugging

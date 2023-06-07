@@ -15,7 +15,6 @@ class User(db.Model): # has relationships with History, CurrentOrders and Addres
 	balance = Column(db.Integer)
 	birthday = Column(db.Date)
 	phone = Column(db.String(21))
-	role = Column(db.String(10))
 
 
 class Admin(db.Model):

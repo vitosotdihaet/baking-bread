@@ -2,7 +2,7 @@ from app import app
 from api.extensions import db
 from flask import jsonify, request
 
-from api.routes.auth.controller import admin_required
+from api.routes.auth.access_decorator import role_required
 from api.routes.goods.tables_to_json import good_types_json, goods_json
 from api.error.error_template import ApiError
 from api.routes.goods.schemas import GoodTypeSchema, UpdateGoodTypeSchema, GoodSchema, UpdateGoodSchema
@@ -14,7 +14,7 @@ from pkg.convert_to_json import convert_formdata_to_json
 # Admin rights are required to access this endpoint
 # This endpoint creates a good type using json from the response
 @app.route('/api/good_types', methods=['POST'])
-@admin_required()
+@role_required('admin')
 def create_good_type():
 
 	json = request.json
@@ -133,7 +133,7 @@ def get_good_type_by_id(id):
 # Admin rights are required to access this endpoint
 # This endpoint updates created good type by its `id`
 @app.route('/api/good_types/<int:id>', methods=['PATCH'])
-@admin_required()
+@role_required('admin')
 def update_good_type(id):
 	
 	good_type_by_id = GoodTypes.query.filter_by(id=id).first()
@@ -178,7 +178,7 @@ def update_good_type(id):
 # Admin rights are required to access this endpoint
 # This endpoint deletes all good types
 @app.route('/api/good_types', methods=['DELETE'])
-@admin_required()
+@role_required('admin')
 def delete_good_types():
 
 	good_types_deleted = GoodTypes.query.all()
@@ -201,7 +201,7 @@ def delete_good_types():
 # Admin rights are required to access this endpoint
 # This endpoint deletes a good type by its `id`
 @app.route('/api/good_types/<int:id>', methods=['DELETE'])
-@admin_required()
+@role_required('admin')
 def delete_good_type(id):
 
 	good_type_by_id = GoodTypes.query.filter_by(id=id).first()
@@ -227,7 +227,7 @@ def delete_good_type(id):
 # Admin rights are required to access this endpoint
 # This endpoint creates a good using form-data from the response
 @app.route('/api/good_types/<int:id>/goods', methods=['POST'])
-@admin_required()
+@role_required('admin')
 def create_good(id):
 	
 	good_type_by_id = GoodTypes.query.filter_by(id=id).first()
@@ -359,7 +359,7 @@ def get_good_by_id(id):
 # Admin rights are required to access this endpoint
 # This endpoint updates created good by its `id`
 @app.route('/api/good_types/goods/<int:id>', methods=['PATCH'])
-@admin_required()
+@role_required('admin')
 def update_good(id):
 
 	good_by_id = Goods.query.filter_by(id=id).first()
@@ -430,7 +430,7 @@ def update_good(id):
 # Admin rights are required to access this endpoint
 # This endpoint deletes all goods
 @app.route('/api/good_types/goods', methods=['DELETE'])
-@admin_required()
+@role_required('admin')
 def delete_goods():
 
 	goods_deleted = Goods.query.all()
@@ -453,7 +453,7 @@ def delete_goods():
 # Admin rights are required to access this endpoint
 # This endpoint deletes a good by its `id`
 @app.route('/api/good_types/goods/<int:id>', methods=['DELETE'])
-@admin_required()
+@role_required('admin')
 def delete_good(id):
 
 	good_by_id = Goods.query.filter_by(id=id).first()
