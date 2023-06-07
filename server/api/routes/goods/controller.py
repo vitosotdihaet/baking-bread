@@ -414,8 +414,9 @@ def update_good(id):
 		# json['image'] = f'https://eugenv.ru/static/images/goodImage{str(id)}.png'
 		# because it was set when a good had been created
 
-	Goods.query.filter_by(id=id).update(json)
-	db.session.commit()
+	if len(json) != 0:
+		Goods.query.filter_by(id=id).update(json)
+		db.session.commit()
 
 	good = Goods.query.filter_by(id=id).first()
 
